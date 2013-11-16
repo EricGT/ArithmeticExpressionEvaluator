@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AEE.Core", "AEE.Core\AEE.Core.fsproj", "{12B6AEF0-0A3F-47CD-AC78-3B692B885072}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "AEE.Core.Tests", "AEE.Core.Tests\AEE.Core.Tests.fsproj", "{11B6C1F6-5E71-43F3-963B-C60C07CDC4F3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{12B6AEF0-0A3F-47CD-AC78-3B692B885072}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{12B6AEF0-0A3F-47CD-AC78-3B692B885072}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{12B6AEF0-0A3F-47CD-AC78-3B692B885072}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{12B6AEF0-0A3F-47CD-AC78-3B692B885072}.Release|Any CPU.Build.0 = Release|Any CPU
+		{11B6C1F6-5E71-43F3-963B-C60C07CDC4F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11B6C1F6-5E71-43F3-963B-C60C07CDC4F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11B6C1F6-5E71-43F3-963B-C60C07CDC4F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11B6C1F6-5E71-43F3-963B-C60C07CDC4F3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
