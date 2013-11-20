@@ -31,17 +31,8 @@
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Semantic
+module ArithmeticExpressionEvaluator.Parser
 
-type expr =
-    | Sum of int * int
-    | Product of int * int
-    | Difference of int * int
-    | Quotient of int * int
+open ArithmeticExpressionEvaluator.Lib
+open ArithmeticExpressionEvaluator.Lexer
 
-let eval (e : expr) =
-    match e with
-    | Sum (a,b) -> a + b
-    | Product (a,b) -> a * b
-    | Difference (a,b) -> a - b
-    | Quotient (a,b) -> a / b

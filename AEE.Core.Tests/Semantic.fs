@@ -1,4 +1,5 @@
-﻿(*
+﻿//#region License
+(*
 
 Copyright 2013 Eric Taucher
 
@@ -16,6 +17,8 @@ limitations under the License.
 
 *)
 
+//#endregion
+
 module ArithmeticExpressionEvaluator.Semantic.Tests
 
 open ArithmeticExpressionEvaluator.Semantic
@@ -28,26 +31,37 @@ let evalValues : (expr * int)[] = [|
     (
         // idx 0
         // Semantic.eval.01
+        // Sum test
         Sum(1,1),
         2
     );
     (
         // idx 1
         // Semantic.eval.02
+        // Difference test
         Difference(4,1),
         3
     );
     (
         // idx 2
         // Semantic.eval.03
+        // Product test
         Product(2,2),
         4
     );
     (
         // idx 3
         // Semantic.eval.04
+        // Quotient test where result has no remainder
         Quotient(4,2),
         2
+    );
+    (
+        // idx 4
+        // Semantic.eval.05
+        // Quotient test where result has remainder
+        Quotient(4,3),
+        1
     );
     |]
    
@@ -56,7 +70,8 @@ let evalValues : (expr * int)[] = [|
 [<TestCase(1, TestName = "Semantic.eval.02")>]
 [<TestCase(2, TestName = "Semantic.eval.03")>]
 [<TestCase(3, TestName = "Semantic.eval.04")>]
-let ``function mk_precedence`` idx =
+[<TestCase(4, TestName = "Semantic.eval.05")>]
+let ``function eval`` idx =
     let (expr, _) = evalValues.[idx]
     let (_, result) = evalValues.[idx]
 

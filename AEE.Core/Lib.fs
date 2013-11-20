@@ -31,17 +31,24 @@
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Semantic
+module ArithmeticExpressionEvaluator.Lib
 
-type expr =
-    | Sum of int * int
-    | Product of int * int
-    | Difference of int * int
-    | Quotient of int * int
+//#region String operations
 
-let eval (e : expr) =
-    match e with
-    | Sum (a,b) -> a + b
-    | Product (a,b) -> a * b
-    | Difference (a,b) -> a - b
-    | Quotient (a,b) -> a / b
+(* ------------------------------------------------------------------------- *)
+(* String operations (surely there is a better way...)                       *)
+(* ------------------------------------------------------------------------- *)
+
+// Note: Other versions of explode will return a char list.
+// Here the result is string list with each char being converted to a string
+// containing a single character.
+
+// explode (s : string) : string list
+let explode (s : string) =
+    let rec exap n (l : string list) : string list =
+        if n < 0 
+        then l 
+        else exap (n - 1) ((s.Substring (n, 1))::l)
+    exap (s.Length - 1) []
+
+//#endregion
