@@ -124,7 +124,7 @@ let rec tokens sl =
     with 
     | Noparse -> [],sl
 
-//let lex (sl : string list) : token list =
+//lex (sl : string list) : token list
 let lex sl =
     // ending (prs : 'a -> 'b * string list) : 'a -> 'b
     let ending prs =
