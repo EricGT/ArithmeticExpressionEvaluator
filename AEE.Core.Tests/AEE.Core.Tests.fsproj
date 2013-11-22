@@ -39,7 +39,8 @@
     <Compile Include="Semantic.fs" />
     <Compile Include="ParserCombinator.fs" />
     <Compile Include="Lexer.fs" />
-    <Compile Include="Parser.fs" />
+    <Compile Include="Prefix.fs" />
+    <Compile Include="Infix.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

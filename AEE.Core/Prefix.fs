@@ -19,14 +19,18 @@ limitations under the License.
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Parser
+module ArithmeticExpressionEvaluator.Prefix
 
 open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
 open ArithmeticExpressionEvaluator.Lexer
 
-// BNF
+
+//#region Prefix Parser
+
+// BNF - prefix
+//
 // expr =
 //   | int
 //   | + ( expr , expr )
@@ -34,39 +38,41 @@ open ArithmeticExpressionEvaluator.Lexer
 //   | - ( expr , expr )
 //   | / ( expr , expr )
 
-let rec intExpr (l : token list) : (expr * token list) =
+let rec int (l : token list) : (expr * token list) =
     match l with
     | (Integer x)::tl -> 
         let intValue = System.Int32.Parse(x)
         (Int intValue, tl)
     | _ -> raise Noparse
 
-and sumExpr (l : token list) : (expr * token list) =
-    let parser = a (Operator "+") .>>. a OpenParen .>>. exprs .>>. a Comma .>>. exprs .>>. a CloseParen
+and sum (l : token list) : (expr * token list) =
+    let parser = a (Operator "+") .>>. a OpenParen .>>. expr .>>. a Comma .>>. expr .>>. a CloseParen
     let mk = (fun (((((_,_),left),_),right),_) -> Sum(left,right))
     (parser |>> mk) l
 
-and prodExpr (l : token list) : (expr * token list) =
-    let parser = a (Operator "*") .>>. a OpenParen .>>. exprs .>>. a Comma .>>. exprs .>>. a CloseParen
+and prod (l : token list) : (expr * token list) =
+    let parser = a (Operator "*") .>>. a OpenParen .>>. expr .>>. a Comma .>>. expr .>>. a CloseParen
     let mk = (fun (((((_,_),left),_),right),_) -> Product(left,right))
     (parser |>> mk) l
 
-and diffExpr (l : token list) : (expr * token list) =
-    let parser = a (Operator "-") .>>. a OpenParen .>>. exprs .>>. a Comma .>>. exprs .>>. a CloseParen
+and diff (l : token list) : (expr * token list) =
+    let parser = a (Operator "-") .>>. a OpenParen .>>. expr .>>. a Comma .>>. expr .>>. a CloseParen
     let mk = (fun (((((_,_),left),_),right),_) -> Difference(left,right))
     (parser |>> mk) l
 
-and quotExpr (l : token list) : (expr * token list) =
-    let parser = a (Operator "/") .>>. a OpenParen .>>. exprs .>>. a Comma .>>. exprs .>>. a CloseParen
+and quot (l : token list) : (expr * token list) =
+    let parser = a (Operator "/") .>>. a OpenParen .>>. expr .>>. a Comma .>>. expr .>>. a CloseParen
     let mk = (fun (((((_,_),left),_),right),_) -> Quotient(left,right))
     (parser |>> mk) l
 
-and exprs =
-    intExpr <|>
-    sumExpr <|>
-    prodExpr <|>
-    diffExpr <|>
-    quotExpr 
+and expr =
+    int <|>
+    sum <|>
+    prod <|>
+    diff <|>
+    quot 
 
 let prefixParser l =
-    fst (exprs l)
+    fst (expr l)
+
+//#endregion

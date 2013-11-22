@@ -22,7 +22,6 @@ limitations under the License.
 module ArithmeticExpressionEvaluator.Lexer.Tests
 
 open ArithmeticExpressionEvaluator.Lexer
-open ArithmeticExpressionEvaluator.Parser
 
 open NUnit.Framework
 
@@ -545,6 +544,8 @@ let ``function lex.isdecimaldigit`` idx =
     Assert.AreEqual (result, functionResult)
 
 //#endregion
+
+
 
 //#region "stringof tests"
 
@@ -2096,7 +2097,6 @@ let ``function spacedtoken - type string`` idx =
 
 //#endregion
 
-
 //#region "tokens tests"
 
 // The first string is what humans expect to read
@@ -2540,7 +2540,6 @@ let ``function tokens - type string`` idx =
 
 //#endregion
 
-
 //#region "lex tests"
 
 // The first string is what humans expect to read
@@ -2983,3 +2982,5 @@ let ``function lex - type string`` idx =
     Assert.AreEqual(current, currentResult)
 
 //#endregion
+
+
