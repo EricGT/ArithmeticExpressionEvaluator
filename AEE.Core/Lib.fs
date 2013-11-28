@@ -33,6 +33,42 @@
 
 module ArithmeticExpressionEvaluator.Lib
 
+(* ------------------------------------------------------------------------- *)
+(* List basics.                                                              *)
+(* ------------------------------------------------------------------------- *)
+
+// map (f : 'a -> 'b) : ('a list -> 'b list)
+let map f =
+    let rec mapf l =
+        match l with
+        | [] -> []
+        | (x::t) -> 
+            let y = f x
+            y::(mapf t)
+    mapf
+
+// last (l : 'a list) : 'a
+let rec last l =
+    match l with
+    | [x] -> x
+    | (h::t) -> last t
+    | [] -> failwith "last"
+    
+// butlast (l : 'a list) : 'a list
+let rec butlast l =
+    match l with
+    | [_] -> []
+    | (h::t) -> h::(butlast t)
+    | [] -> failwith "butlast"
+
+// rev : ('a list -> 'a list)
+let rev =
+    let rec rev_append acc l =
+        match l with
+        | [] -> acc
+        | h::t -> rev_append (h::acc) t
+    fun l -> rev_append [] l
+
 //#region String operations
 
 (* ------------------------------------------------------------------------- *)
@@ -52,3 +88,29 @@ let explode (s : string) =
     exap (s.Length - 1) []
 
 //#endregion
+
+(* ------------------------------------------------------------------------- *)
+(* Various useful list operations.                                           *)
+(* ------------------------------------------------------------------------- *)
+
+// partition (p : 'a -> bool) (l : 'a list) :  ('a list * 'a list)
+let rec partition p l =
+    match l with
+    | [] -> [],l
+    | h::t -> 
+        let yes,no = partition p t
+        if p(h) 
+        then (if LanguagePrimitives.PhysicalEquality yes t then l,[] else h::yes,no)
+        else (if LanguagePrimitives.PhysicalEquality no t then [],l else yes,h::no)
+
+(* ------------------------------------------------------------------------- *)
+(* Zipping, unzipping etc.                                                   *)
+(* ------------------------------------------------------------------------- *)
+
+// unzip : ('a * 'b) list -> 'a list * 'b list
+let rec unzip =
+    function 
+    | [] -> [],[]
+    | ((a,b)::rest) -> 
+        let alist,blist = unzip rest
+        (a::alist,b::blist)

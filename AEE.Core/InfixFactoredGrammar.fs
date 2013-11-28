@@ -19,12 +19,12 @@ limitations under the License.
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Infix
+module ArithmeticExpressionEvaluator.InfixFactoredGrammar
 
 open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
-open ArithmeticExpressionEvaluator.Lexer
+open ArithmeticExpressionEvaluator.PrefixLexer
 
 //#region Infix Parser
 
@@ -99,8 +99,7 @@ and factor (l : token list) =
     (int <|>
      parenExpr) l
 
-let infixParser l =
+let infixFactoredGrammar l =
     fst (expr l) 
     
 //#endregion
-

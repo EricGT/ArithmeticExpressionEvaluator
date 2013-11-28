@@ -24,7 +24,7 @@ module ArithmeticExpressionEvaluator.Prefix
 open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
-open ArithmeticExpressionEvaluator.Lexer
+open ArithmeticExpressionEvaluator.PrefixLexer
 
 
 //#region Prefix Parser

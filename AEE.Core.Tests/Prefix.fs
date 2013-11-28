@@ -23,7 +23,7 @@ module ArithmeticExpressionEvaluator.Prefix.Tests
 
 open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
-open ArithmeticExpressionEvaluator.Lexer
+open ArithmeticExpressionEvaluator.PrefixLexer
 open ArithmeticExpressionEvaluator.Prefix
 
 open NUnit.Framework
@@ -204,7 +204,7 @@ let ``function Prefix.parser`` idx =
 //    printfn "passed explode step"
 
     // Verify result of lexer
-    let lexResult = ArithmeticExpressionEvaluator.Lexer.lex internalForm
+    let lexResult = ArithmeticExpressionEvaluator.PrefixLexer.prefixLex internalForm
 //    printfn "internalForm: %A" tokenList
 //    printfn "lex result: %A" lexResult
     Assert.AreEqual (lexResult, tokenList)

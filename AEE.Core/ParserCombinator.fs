@@ -115,7 +115,7 @@ let rec many prs input =
 // When you make a parser you typically get differnt types of output, e.g.
 // string list
 // string
-// string list * token)
+// (string list * token)
 // (token list * string list) * int
 // but need the output to be something like a string, token or token list.
 // So one creates a function to transform the output to the type desired, e.g. treatment.
@@ -149,5 +149,35 @@ let finished input =
     if input = [] 
     then 0,input 
     else failwith "Unparsed input"
+
+// fix (err : string) (prs : 'a -> 'b) (input : 'a) : 'b                                      // generic
+// fix (err : string) (prs : string list -> string list) (input : string list) : string list  // string
+// fix (err : string) (prs : token list  -> token list)  (input : token list)  : token list   // token
+let fix err prs input =
+    try 
+        prs input
+    with 
+    | Noparse -> failwith (err + " expected")
+
+// leftbin (prs : 'a -> 'b * 'c) (sep : 'c -> 'd * 'a) (cons : 'd -> 'b -> 'b -> 'b) (err : string) : ('a -> 'b * 'c)                                                                                    // generic
+// leftbin (prs : string list -> string * string list) (sep : string list -> string * string list) (cons : string -> string -> string -> string) (err : string) : (string list -> string * string list)  // string
+// leftbin (prs : token list  -> token  * token list)  (sep : token list  -> token  * token list)  (cons : token  -> token  -> token  -> token)  (err : string) : (token list  -> token  * token list)   // token
+let leftbin prs sep cons err =
+    prs .>>. many (sep .>>. fix err prs) |>>
+    fun (x,opxs) -> 
+        let ops,xs = unzip opxs
+        List.foldBack2 (fun op y x -> cons op x y) (rev ops) (rev xs) x
+
+// rightbin (prs : 'a -> 'b * 'c) (sep : 'c -> 'd * 'a) (cons : 'd -> 'b -> 'b -> 'b) (err : string) : ('a -> 'b * 'c)                                                                                    // generic
+// rightbin (prs : string list -> string * string list) (sep : string list -> string * string list) (cons : string -> string -> string -> string) (err : string) : (string list -> string * string list)  // string
+// rightbin (prs : token list  -> token  * token list)  (sep : token list  -> token  * token list)  (cons : token  -> token  -> token  -> token)  (err : string) : (token list  -> token  * token list)   // token
+let rightbin prs sep cons err =
+    prs .>>. many (sep .>>. fix err prs) |>>
+    fun (x,opxs) -> 
+        if opxs = [] 
+        then x 
+        else
+            let ops,xs = unzip opxs
+            List.foldBack2 cons ops (x::butlast xs) (last xs)
 
 //#endregion

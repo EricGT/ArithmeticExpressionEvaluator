@@ -19,9 +19,9 @@ limitations under the License.
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Lexer.Tests
+module ArithmeticExpressionEvaluator.PrefixLexer.Tests
 
-open ArithmeticExpressionEvaluator.Lexer
+open ArithmeticExpressionEvaluator.PrefixLexer
 
 open NUnit.Framework
 
@@ -30,7 +30,7 @@ open NUnit.Framework
 let private iswhitespaceValues : (string * bool)[] = [|
     (
         // idx 0
-        // Lexer.iswhitespace.01
+        // PrefixLexer.iswhitespace.01
         // No input
         // System.IndexOutOfRangeException - "Index was outside the bounds of the array."
         // The error is because the function uses an array and there is no char to covert to an index into the array.
@@ -39,100 +39,100 @@ let private iswhitespaceValues : (string * bool)[] = [|
     );
     (
         // idx 1
-        // Lexer.iswhitespace.02
+        // PrefixLexer.iswhitespace.02
         // one space
         " ",
         true
     );
     (
         // idx 2
-        // Lexer.iswhitespace.03
+        // PrefixLexer.iswhitespace.03
         // one tab
         "\t",
         true
     );
     (
         // idx 3
-        // Lexer.iswhitespace.04
+        // PrefixLexer.iswhitespace.04
         // one newline
         "\n",
         true
     );
     (
         // idx 4
-        // Lexer.iswhitespace.05
+        // PrefixLexer.iswhitespace.05
         // one carriage return
         "\r",
         true
     );
     (
         // idx 5
-        // Lexer.iswhitespace.06
+        // PrefixLexer.iswhitespace.06
         // one space then one letter
         " a",
         true
     );
     (
         // idx 6
-        // Lexer.iswhitespace.07
+        // PrefixLexer.iswhitespace.07
         // one tab then one letter
         "\ta",
         true
     );
     (
         // idx 7
-        // Lexer.iswhitespace.08
+        // PrefixLexer.iswhitespace.08
         // one newline then one letter
         "\na",
         true
     );
     (
         // idx 8
-        // Lexer.iswhitespace.09
+        // PrefixLexer.iswhitespace.09
         // one carriage return then one letter
         "\ra",
         true
     );
     (
         // idx 9
-        // Lexer.iswhitespace.10
+        // PrefixLexer.iswhitespace.10
         // one letter
         "a",
         false
     );
     (
         // idx 10
-        // Lexer.iswhitespace.11
+        // PrefixLexer.iswhitespace.11
         // one decimal digit
         "1",
         false
     );
     (
         // idx 11
-        // Lexer.iswhitespace.12
+        // PrefixLexer.iswhitespace.12
         // one letter and one space
         "a ",
         false
     );
     |]
 [<Test>]
-[<TestCase(0, TestName = "Lexer.iswhitespace.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
-[<TestCase(1, TestName = "Lexer.iswhitespace.02")>]
-[<TestCase(2, TestName = "Lexer.iswhitespace.03")>]
-[<TestCase(3, TestName = "Lexer.iswhitespace.04")>]
-[<TestCase(4, TestName = "Lexer.iswhitespace.05")>]
-[<TestCase(5, TestName = "Lexer.iswhitespace.06")>]
-[<TestCase(6, TestName = "Lexer.iswhitespace.07")>]
-[<TestCase(7, TestName = "Lexer.iswhitespace.08")>]
-[<TestCase(8, TestName = "Lexer.iswhitespace.09")>]
-[<TestCase(9, TestName = "Lexer.iswhitespace.010")>]
-[<TestCase(10, TestName = "Lexer.iswhitespace.011")>]
-[<TestCase(11, TestName = "Lexer.iswhitespace.012")>]
+[<TestCase(0, TestName = "PrefixLexer.iswhitespace.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
+[<TestCase(1, TestName = "PrefixLexer.iswhitespace.02")>]
+[<TestCase(2, TestName = "PrefixLexer.iswhitespace.03")>]
+[<TestCase(3, TestName = "PrefixLexer.iswhitespace.04")>]
+[<TestCase(4, TestName = "PrefixLexer.iswhitespace.05")>]
+[<TestCase(5, TestName = "PrefixLexer.iswhitespace.06")>]
+[<TestCase(6, TestName = "PrefixLexer.iswhitespace.07")>]
+[<TestCase(7, TestName = "PrefixLexer.iswhitespace.08")>]
+[<TestCase(8, TestName = "PrefixLexer.iswhitespace.09")>]
+[<TestCase(9, TestName = "PrefixLexer.iswhitespace.010")>]
+[<TestCase(10, TestName = "PrefixLexer.iswhitespace.011")>]
+[<TestCase(11, TestName = "PrefixLexer.iswhitespace.012")>]
 let ``function lex.iswhitespace`` idx =
     let (input, _) = iswhitespaceValues.[idx]
     let (_, result) = iswhitespaceValues.[idx]
 
-    let functionResult = ArithmeticExpressionEvaluator.Lexer.iswhitespace input
+    let functionResult = ArithmeticExpressionEvaluator.PrefixLexer.iswhitespace input
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult
     Assert.AreEqual (result, functionResult)
@@ -144,7 +144,7 @@ let ``function lex.iswhitespace`` idx =
 let private isparenValues : (string * bool)[] = [|
     (
         // idx 0
-        // Lexer.isparen.01
+        // PrefixLexer.isparen.01
         // No input
         // System.IndexOutOfRangeException - "Index was outside the bounds of the array."
         // The error is because the function uses an array and there is no char to covert to an index into the array.
@@ -153,68 +153,68 @@ let private isparenValues : (string * bool)[] = [|
     );
     (
         // idx 1
-        // Lexer.isparen.02
+        // PrefixLexer.isparen.02
         // one open paren
         "(",
         true
     );
     (
         // idx 2
-        // Lexer.isparen.03
+        // PrefixLexer.isparen.03
         // one close paren
         ")",
         true
     );
     (
         // idx 3
-        // Lexer.isparen.04
+        // PrefixLexer.isparen.04
         // one open paren then one letter
         "(a",
         true
     );
     (
         // idx 4
-        // Lexer.isparen.05
+        // PrefixLexer.isparen.05
         // one close paren then one letter
         ")a",
         true
     );
     (
         // idx 5
-        // Lexer.isparen.06
+        // PrefixLexer.isparen.06
         // one letter
         "a",
         false
     );
     (
         // idx 6
-        // Lexer.isparen.07
+        // PrefixLexer.isparen.07
         // one decimal digit
         "1",
         false
     );
     (
         // idx 7
-        // Lexer.isparen.08
+        // PrefixLexer.isparen.08
         // one letter and one open paren
         "a(",
         false
     );
     |]
 [<Test>]
-[<TestCase(0, TestName = "Lexer.isparen.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
-[<TestCase(1, TestName = "Lexer.isparen.02")>]
-[<TestCase(2, TestName = "Lexer.isparen.03")>]
-[<TestCase(3, TestName = "Lexer.isparen.04")>]
-[<TestCase(4, TestName = "Lexer.isparen.05")>]
-[<TestCase(5, TestName = "Lexer.isparen.06")>]
-[<TestCase(6, TestName = "Lexer.isparen.07")>]
-[<TestCase(7, TestName = "Lexer.isparen.08")>]
+[<TestCase(0, TestName = "PrefixLexer.isparen.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
+[<TestCase(1, TestName = "PrefixLexer.isparen.02")>]
+[<TestCase(2, TestName = "PrefixLexer.isparen.03")>]
+[<TestCase(3, TestName = "PrefixLexer.isparen.04")>]
+[<TestCase(4, TestName = "PrefixLexer.isparen.05")>]
+[<TestCase(5, TestName = "PrefixLexer.isparen.06")>]
+[<TestCase(6, TestName = "PrefixLexer.isparen.07")>]
+[<TestCase(7, TestName = "PrefixLexer.isparen.08")>]
 let ``function lex.isparen`` idx =
     let (input, _) = isparenValues.[idx]
     let (_, result) = isparenValues.[idx]
 
-    let functionResult = ArithmeticExpressionEvaluator.Lexer.isparen input
+    let functionResult = ArithmeticExpressionEvaluator.PrefixLexer.isparen input
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult
     Assert.AreEqual (result, functionResult)
@@ -226,7 +226,7 @@ let ``function lex.isparen`` idx =
 let private isoperatorValues : (string * bool)[] = [|
     (
         // idx 0
-        // Lexer.isoperator.01
+        // PrefixLexer.isoperator.01
         // No input
         // System.IndexOutOfRangeException - "Index was outside the bounds of the array."
         // The error is because the function uses an array and there is no char to covert to an index into the array.
@@ -235,100 +235,100 @@ let private isoperatorValues : (string * bool)[] = [|
     );
     (
         // idx 1
-        // Lexer.isoperator.02
+        // PrefixLexer.isoperator.02
         // one star
         "*",
         true
     );
     (
         // idx 2
-        // Lexer.isoperator.03
+        // PrefixLexer.isoperator.03
         // one plus
         "+",
         true
     );
     (
         // idx 3
-        // Lexer.isoperator.04
+        // PrefixLexer.isoperator.04
         // one dash
         "-",
         true
     );
     (
         // idx 4
-        // Lexer.isoperator.05
+        // PrefixLexer.isoperator.05
         // one slash
         "/",
         true
     );
     (
         // idx 5
-        // Lexer.isoperator.06
+        // PrefixLexer.isoperator.06
         // one star then one letter
         "*a",
         true
     );
     (
         // idx 6
-        // Lexer.isoperator.07
+        // PrefixLexer.isoperator.07
         // one plus then one letter
         "+a",
         true
     );
     (
         // idx 7
-        // Lexer.isoperator.08
+        // PrefixLexer.isoperator.08
         // one dash then one letter
         "-a",
         true
     );
     (
         // idx 8
-        // Lexer.isoperator.09
+        // PrefixLexer.isoperator.09
         // one slash then one letter
         "/a",
         true
     );
     (
         // idx 9
-        // Lexer.isoperator.10
+        // PrefixLexer.isoperator.10
         // one letter
         "a",
         false
     );
     (
         // idx 10
-        // Lexer.isoperator.11
+        // PrefixLexer.isoperator.11
         // one decimal digit
         "1",
         false
     );
     (
         // idx 11
-        // Lexer.isoperator.12
+        // PrefixLexer.isoperator.12
         // one letter and one star
         "a*",
         false
     );
     |]
 [<Test>]
-[<TestCase(0, TestName = "Lexer.isoperator.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
-[<TestCase(1, TestName = "Lexer.isoperator.02")>]
-[<TestCase(2, TestName = "Lexer.isoperator.03")>]
-[<TestCase(3, TestName = "Lexer.isoperator.04")>]
-[<TestCase(4, TestName = "Lexer.isoperator.05")>]
-[<TestCase(5, TestName = "Lexer.isoperator.06")>]
-[<TestCase(6, TestName = "Lexer.isoperator.07")>]
-[<TestCase(7, TestName = "Lexer.isoperator.08")>]
-[<TestCase(8, TestName = "Lexer.isoperator.09")>]
-[<TestCase(9, TestName = "Lexer.isoperator.010")>]
-[<TestCase(10, TestName = "Lexer.isoperator.011")>]
-[<TestCase(11, TestName = "Lexer.isoperator.012")>]
+[<TestCase(0, TestName = "PrefixLexer.isoperator.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
+[<TestCase(1, TestName = "PrefixLexer.isoperator.02")>]
+[<TestCase(2, TestName = "PrefixLexer.isoperator.03")>]
+[<TestCase(3, TestName = "PrefixLexer.isoperator.04")>]
+[<TestCase(4, TestName = "PrefixLexer.isoperator.05")>]
+[<TestCase(5, TestName = "PrefixLexer.isoperator.06")>]
+[<TestCase(6, TestName = "PrefixLexer.isoperator.07")>]
+[<TestCase(7, TestName = "PrefixLexer.isoperator.08")>]
+[<TestCase(8, TestName = "PrefixLexer.isoperator.09")>]
+[<TestCase(9, TestName = "PrefixLexer.isoperator.010")>]
+[<TestCase(10, TestName = "PrefixLexer.isoperator.011")>]
+[<TestCase(11, TestName = "PrefixLexer.isoperator.012")>]
 let ``function lex.isoperator`` idx =
     let (input, _) = isoperatorValues.[idx]
     let (_, result) = isoperatorValues.[idx]
 
-    let functionResult = ArithmeticExpressionEvaluator.Lexer.isoperator input
+    let functionResult = ArithmeticExpressionEvaluator.PrefixLexer.isoperator input
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult
     Assert.AreEqual (result, functionResult)
@@ -340,7 +340,7 @@ let ``function lex.isoperator`` idx =
 let private isdecimaldigitValues : (string * bool)[] = [|
     (
         // idx 0
-        // Lexer.isdecimaldigit.001
+        // PrefixLexer.isdecimaldigit.001
         // No input
         // System.IndexOutOfRangeException - "Index was outside the bounds of the array."
         // The error is because the function uses an array and there is no char to covert to an index into the array.
@@ -349,196 +349,196 @@ let private isdecimaldigitValues : (string * bool)[] = [|
     );
     (
         // idx 1
-        // Lexer.isdecimaldigit.002
+        // PrefixLexer.isdecimaldigit.002
         // one one character
         "1",
         true
     );
     (
         // idx 2
-        // Lexer.isdecimaldigit.003
+        // PrefixLexer.isdecimaldigit.003
         // one two character
         "2",
         true
     );
     (
         // idx 3
-        // Lexer.isdecimaldigit.004
+        // PrefixLexer.isdecimaldigit.004
         // one three character
         "3",
         true
     );
     (
         // idx 4
-        // Lexer.isdecimaldigit.005
+        // PrefixLexer.isdecimaldigit.005
         // one four character
         "4",
         true
     );
     (
         // idx 5
-        // Lexer.isdecimaldigit.006
+        // PrefixLexer.isdecimaldigit.006
         // one five character
         "5",
         true
     );
     (
         // idx 6
-        // Lexer.isdecimaldigit.007
+        // PrefixLexer.isdecimaldigit.007
         // one six character
         "6",
         true
     );
     (
         // idx 7
-        // Lexer.isdecimaldigit.008
+        // PrefixLexer.isdecimaldigit.008
         // one seven character
         "7",
         true
     );
     (
         // idx 8
-        // Lexer.isdecimaldigit.009
+        // PrefixLexer.isdecimaldigit.009
         // one eight character
         "8",
         true
     );
     (
         // idx 9
-        // Lexer.isdecimaldigit.010
+        // PrefixLexer.isdecimaldigit.010
         // one nine character
         "9",
         true
     );
     (
         // idx 10
-        // Lexer.isdecimaldigit.011
+        // PrefixLexer.isdecimaldigit.011
         // one zero character
         "0",
         true
     );
     (
         // idx 11
-        // Lexer.isdecimaldigit.012
+        // PrefixLexer.isdecimaldigit.012
         // one one character then one letter
         "1a",
         true
     );
     (
         // idx 12
-        // Lexer.isdecimaldigit.013
+        // PrefixLexer.isdecimaldigit.013
         // one two character then one letter
         "2a",
         true
     );
     (
         // idx 13
-        // Lexer.isdecimaldigit.014
+        // PrefixLexer.isdecimaldigit.014
         // one three character then one letter
         "3a",
         true
     );
     (
         // idx 14
-        // Lexer.isdecimaldigit.015
+        // PrefixLexer.isdecimaldigit.015
         // one four character then one letter
         "4a",
         true
     );
     (
         // idx 15
-        // Lexer.isdecimaldigit.016
+        // PrefixLexer.isdecimaldigit.016
         // one five character then one letter
         "5a",
         true
     );
     (
         // idx 16
-        // Lexer.isdecimaldigit.017
+        // PrefixLexer.isdecimaldigit.017
         // one six character then one letter
         "6a",
         true
     );
     (
         // idx 17
-        // Lexer.isdecimaldigit.018
+        // PrefixLexer.isdecimaldigit.018
         // one seven character then one letter
         "7a",
         true
     );
     (
         // idx 18
-        // Lexer.isdecimaldigit.019
+        // PrefixLexer.isdecimaldigit.019
         // one eight character then one letter
         "8a",
         true
     );
     (
         // idx 19
-        // Lexer.isdecimaldigit.020
+        // PrefixLexer.isdecimaldigit.020
         // one nine character then one letter
         "9a",
         true
     );
     (
         // idx 20
-        // Lexer.isdecimaldigit.021
+        // PrefixLexer.isdecimaldigit.021
         // one zero character then one letter
         "0a",
         true
     );
     (
         // idx 21
-        // Lexer.isdecimaldigit.22
+        // PrefixLexer.isdecimaldigit.22
         // one letter
         "a",
         false
     );
     (
         // idx 22
-        // Lexer.isdecimaldigit.23
+        // PrefixLexer.isdecimaldigit.23
         // one star
         "*",
         false
     );
     (
         // idx 23
-        // Lexer.isdecimaldigit.24
+        // PrefixLexer.isdecimaldigit.24
         // one letter and one one character
         "a1",
         false
     );
     |]
 [<Test>]
-[<TestCase(0, TestName = "Lexer.isdecimaldigit.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
-[<TestCase(1, TestName = "Lexer.isdecimaldigit.02")>]
-[<TestCase(2, TestName = "Lexer.isdecimaldigit.03")>]
-[<TestCase(3, TestName = "Lexer.isdecimaldigit.04")>]
-[<TestCase(4, TestName = "Lexer.isdecimaldigit.05")>]
-[<TestCase(5, TestName = "Lexer.isdecimaldigit.06")>]
-[<TestCase(6, TestName = "Lexer.isdecimaldigit.07")>]
-[<TestCase(7, TestName = "Lexer.isdecimaldigit.08")>]
-[<TestCase(8, TestName = "Lexer.isdecimaldigit.09")>]
-[<TestCase(9, TestName = "Lexer.isdecimaldigit.010")>]
-[<TestCase(10, TestName = "Lexer.isdecimaldigit.011")>]
-[<TestCase(11, TestName = "Lexer.isdecimaldigit.012")>]
-[<TestCase(12, TestName = "Lexer.isdecimaldigit.013")>]
-[<TestCase(13, TestName = "Lexer.isdecimaldigit.014")>]
-[<TestCase(14, TestName = "Lexer.isdecimaldigit.015")>]
-[<TestCase(15, TestName = "Lexer.isdecimaldigit.016")>]
-[<TestCase(16, TestName = "Lexer.isdecimaldigit.017")>]
-[<TestCase(17, TestName = "Lexer.isdecimaldigit.018")>]
-[<TestCase(18, TestName = "Lexer.isdecimaldigit.019")>]
-[<TestCase(19, TestName = "Lexer.isdecimaldigit.020")>]
-[<TestCase(20, TestName = "Lexer.isdecimaldigit.021")>]
-[<TestCase(21, TestName = "Lexer.isdecimaldigit.022")>]
-[<TestCase(22, TestName = "Lexer.isdecimaldigit.023")>]
-[<TestCase(23, TestName = "Lexer.isdecimaldigit.024")>]
+[<TestCase(0, TestName = "PrefixLexer.isdecimaldigit.01", ExpectedException=typeof<System.IndexOutOfRangeException>, ExpectedMessage = "Index was outside the bounds of the array.")>]
+[<TestCase(1, TestName = "PrefixLexer.isdecimaldigit.02")>]
+[<TestCase(2, TestName = "PrefixLexer.isdecimaldigit.03")>]
+[<TestCase(3, TestName = "PrefixLexer.isdecimaldigit.04")>]
+[<TestCase(4, TestName = "PrefixLexer.isdecimaldigit.05")>]
+[<TestCase(5, TestName = "PrefixLexer.isdecimaldigit.06")>]
+[<TestCase(6, TestName = "PrefixLexer.isdecimaldigit.07")>]
+[<TestCase(7, TestName = "PrefixLexer.isdecimaldigit.08")>]
+[<TestCase(8, TestName = "PrefixLexer.isdecimaldigit.09")>]
+[<TestCase(9, TestName = "PrefixLexer.isdecimaldigit.010")>]
+[<TestCase(10, TestName = "PrefixLexer.isdecimaldigit.011")>]
+[<TestCase(11, TestName = "PrefixLexer.isdecimaldigit.012")>]
+[<TestCase(12, TestName = "PrefixLexer.isdecimaldigit.013")>]
+[<TestCase(13, TestName = "PrefixLexer.isdecimaldigit.014")>]
+[<TestCase(14, TestName = "PrefixLexer.isdecimaldigit.015")>]
+[<TestCase(15, TestName = "PrefixLexer.isdecimaldigit.016")>]
+[<TestCase(16, TestName = "PrefixLexer.isdecimaldigit.017")>]
+[<TestCase(17, TestName = "PrefixLexer.isdecimaldigit.018")>]
+[<TestCase(18, TestName = "PrefixLexer.isdecimaldigit.019")>]
+[<TestCase(19, TestName = "PrefixLexer.isdecimaldigit.020")>]
+[<TestCase(20, TestName = "PrefixLexer.isdecimaldigit.021")>]
+[<TestCase(21, TestName = "PrefixLexer.isdecimaldigit.022")>]
+[<TestCase(22, TestName = "PrefixLexer.isdecimaldigit.023")>]
+[<TestCase(23, TestName = "PrefixLexer.isdecimaldigit.024")>]
 let ``function lex.isdecimaldigit`` idx =
     let (input, _) = isdecimaldigitValues.[idx]
     let (_, result) = isdecimaldigitValues.[idx]
 
-    let functionResult = ArithmeticExpressionEvaluator.Lexer.isdecimaldigit input
+    let functionResult = ArithmeticExpressionEvaluator.PrefixLexer.isdecimaldigit input
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult
     Assert.AreEqual (result, functionResult)
@@ -555,7 +555,7 @@ let ``function lex.isdecimaldigit`` idx =
 let private stringofValues : (string * string list * (string -> bool) * (string * string list))[] = [|
     (
         // idx 0
-        // Lexer.stringof.01
+        // PrefixLexer.stringof.01
         // No input
         // throws noparse
         "",    // humans read this
@@ -565,7 +565,7 @@ let private stringofValues : (string * string list * (string -> bool) * (string 
     );
     (
         // idx 1
-        // Lexer.stringof.02
+        // PrefixLexer.stringof.02
         // one number
         "1",
         ["1"],
@@ -574,7 +574,7 @@ let private stringofValues : (string * string list * (string -> bool) * (string 
     );
     (
         // idx 2
-        // Lexer.stringof.03
+        // PrefixLexer.stringof.03
         // two numbers
         "12",
         ["1";"2"],
@@ -583,7 +583,7 @@ let private stringofValues : (string * string list * (string -> bool) * (string 
     );
     (
         // idx 3
-        // Lexer.stringof.04
+        // PrefixLexer.stringof.04
         // three numbers
         "123",
         ["1";"2";"3"],
@@ -592,10 +592,10 @@ let private stringofValues : (string * string list * (string -> bool) * (string 
     );
     |]
 [<Test>]
-[<TestCase(0, TestName = "Lexer.stringof.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.stringof.02")>]
-[<TestCase(2, TestName = "Lexer.stringof.03")>]
-[<TestCase(3, TestName = "Lexer.stringof.04")>]
+[<TestCase(0, TestName = "PrefixLexer.stringof.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.stringof.02")>]
+[<TestCase(2, TestName = "PrefixLexer.stringof.03")>]
+[<TestCase(3, TestName = "PrefixLexer.stringof.04")>]
 let ``function lex.stringof`` idx =
     let (externalForm, _, _, _) = stringofValues.[idx]
     let (_, internalForm, _, _) = stringofValues.[idx]
@@ -626,16 +626,16 @@ let ``function lex.stringof`` idx =
 let private integerStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.integer.01
+        // PrefixLexer.integer.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.integer function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.integer function reads this
         (Integer "0",[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.integer.02
+        // PrefixLexer.integer.02
         // One decimal digit
         "1",
         ["1"],
@@ -643,7 +643,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 2
-        // Lexer.integer.03
+        // PrefixLexer.integer.03
         // Two decimal digits
         "10",
         ["1";"0"],
@@ -651,7 +651,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 3
-        // Lexer.integer.04
+        // PrefixLexer.integer.04
         // Multiple decimal digits
         "1234567890",
         ["1";"2";"3";"4";"5";"6";"7";"8";"9";"0"],
@@ -659,7 +659,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 4
-        // Lexer.integer.05
+        // PrefixLexer.integer.05
         // a letter then a decimal digit
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "a1",
@@ -668,7 +668,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 5
-        // Lexer.integer.06
+        // PrefixLexer.integer.06
         // a decimal digit then a letter
         "1a",
         ["1";"a"],
@@ -676,7 +676,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 6
-        // Lexer.integer.07
+        // PrefixLexer.integer.07
         // a decimal digit then an operator
         "1+",
         ["1";"+"],
@@ -684,7 +684,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 7
-        // Lexer.integer.08
+        // PrefixLexer.integer.08
         // a decimal digit then a open paren
         "1(",
         ["1";"("],
@@ -692,7 +692,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 8
-        // Lexer.integer.09
+        // PrefixLexer.integer.09
         // a decimal digit then a close paren
         "1)",
         ["1";")"],
@@ -700,7 +700,7 @@ let private integerStringTypeValues : (string * string list * (token * string li
     );
     (
         // idx 9
-        // Lexer.integer.010
+        // PrefixLexer.integer.010
         // a decimal digit then a space
         "1 ",
         ["1";" "],
@@ -709,16 +709,16 @@ let private integerStringTypeValues : (string * string list * (token * string li
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.integer.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.integer.02")>]
-[<TestCase(2, TestName = "Lexer.integer.03")>]
-[<TestCase(3, TestName = "Lexer.integer.04")>]
-[<TestCase(4, TestName = "Lexer.integer.05", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(5, TestName = "Lexer.integer.06")>]
-[<TestCase(6, TestName = "Lexer.integer.07")>]
-[<TestCase(7, TestName = "Lexer.integer.08")>]
-[<TestCase(8, TestName = "Lexer.integer.09")>]
-[<TestCase(9, TestName = "Lexer.integer.010")>]
+[<TestCase(0, TestName = "PrefixLexer.integer.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.integer.02")>]
+[<TestCase(2, TestName = "PrefixLexer.integer.03")>]
+[<TestCase(3, TestName = "PrefixLexer.integer.04")>]
+[<TestCase(4, TestName = "PrefixLexer.integer.05", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(5, TestName = "PrefixLexer.integer.06")>]
+[<TestCase(6, TestName = "PrefixLexer.integer.07")>]
+[<TestCase(7, TestName = "PrefixLexer.integer.08")>]
+[<TestCase(8, TestName = "PrefixLexer.integer.09")>]
+[<TestCase(9, TestName = "PrefixLexer.integer.010")>]
 let ``function integer - type string`` idx =
     let (externalForm, _, _) = integerStringTypeValues.[idx]
     let (_, internalForm, _) = integerStringTypeValues.[idx]
@@ -732,7 +732,7 @@ let ``function integer - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.integer
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.integer
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -749,16 +749,16 @@ let ``function integer - type string`` idx =
 let private openParenStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.openParen.01
+        // PrefixLexer.openParen.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.openParen function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.openParen function reads this
         (Comma,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.openParen.02
+        // PrefixLexer.openParen.02
         // One open paren
         "(",
         ["("],
@@ -766,7 +766,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 2
-        // Lexer.openParen.03
+        // PrefixLexer.openParen.03
         // Two open parens
         "((",
         ["(";"("],
@@ -774,7 +774,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 3
-        // Lexer.openParen.04
+        // PrefixLexer.openParen.04
         // a letter then a open paren
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "a(",
@@ -783,7 +783,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 4
-        // Lexer.openParen.05
+        // PrefixLexer.openParen.05
         // a open paren then a letter
         "(a",
         ["(";"a"],
@@ -791,7 +791,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 5
-        // Lexer.openParen.06
+        // PrefixLexer.openParen.06
         // a open paren then an operator
         "(+",
         ["(";"+"],
@@ -799,7 +799,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 6
-        // Lexer.openParen.07
+        // PrefixLexer.openParen.07
         // a open paren then a decimal digit
         "(1",
         ["(";"1"],
@@ -807,7 +807,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 7
-        // Lexer.openParen.08
+        // PrefixLexer.openParen.08
         // a open paren then a close paren
         "()",
         ["(";")"],
@@ -815,7 +815,7 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     );
     (
         // idx 8
-        // Lexer.openParen.09
+        // PrefixLexer.openParen.09
         // a open paren then a space
         "( ",
         ["(";" "],
@@ -824,15 +824,15 @@ let private openParenStringTypeValues : (string * string list * (token * string 
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.openParen.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.openParen.02")>]
-[<TestCase(2, TestName = "Lexer.openParen.03")>]
-[<TestCase(3, TestName = "Lexer.openParen.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(4, TestName = "Lexer.openParen.05")>]
-[<TestCase(5, TestName = "Lexer.openParen.06")>]
-[<TestCase(6, TestName = "Lexer.openParen.07")>]
-[<TestCase(7, TestName = "Lexer.openParen.08")>]
-[<TestCase(8, TestName = "Lexer.openParen.09")>]
+[<TestCase(0, TestName = "PrefixLexer.openParen.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.openParen.02")>]
+[<TestCase(2, TestName = "PrefixLexer.openParen.03")>]
+[<TestCase(3, TestName = "PrefixLexer.openParen.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(4, TestName = "PrefixLexer.openParen.05")>]
+[<TestCase(5, TestName = "PrefixLexer.openParen.06")>]
+[<TestCase(6, TestName = "PrefixLexer.openParen.07")>]
+[<TestCase(7, TestName = "PrefixLexer.openParen.08")>]
+[<TestCase(8, TestName = "PrefixLexer.openParen.09")>]
 let ``function openParen - type string`` idx =
     let (externalForm, _, _) = openParenStringTypeValues.[idx]
     let (_, internalForm, _) = openParenStringTypeValues.[idx]
@@ -846,7 +846,7 @@ let ``function openParen - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.openParen
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.openParen
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -863,16 +863,16 @@ let ``function openParen - type string`` idx =
 let private closeParenStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.closeParen.01
+        // PrefixLexer.closeParen.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.closeParen function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.closeParen function reads this
         (Comma,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.closeParen.02
+        // PrefixLexer.closeParen.02
         // One close paren
         ")",
         [")"],
@@ -880,7 +880,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 2
-        // Lexer.closeParen.03
+        // PrefixLexer.closeParen.03
         // Two close parens
         "))",
         [")";")"],
@@ -888,7 +888,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 3
-        // Lexer.closeParen.04
+        // PrefixLexer.closeParen.04
         // a letter then a close paren
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "a)",
@@ -897,7 +897,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 4
-        // Lexer.closeParen.05
+        // PrefixLexer.closeParen.05
         // a close paren then a letter
         ")a",
         [")";"a"],
@@ -905,7 +905,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 5
-        // Lexer.closeParen.06
+        // PrefixLexer.closeParen.06
         // a close paren then an operator
         ")+",
         [")";"+"],
@@ -913,7 +913,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 6
-        // Lexer.closeParen.07
+        // PrefixLexer.closeParen.07
         // a close paren then a decimal digit
         ")1",
         [")";"1"],
@@ -921,7 +921,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 7
-        // Lexer.closeParen.08
+        // PrefixLexer.closeParen.08
         // a close paren then a open paren
         ")(",
         [")";"("],
@@ -929,7 +929,7 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     );
     (
         // idx 8
-        // Lexer.closeParen.09
+        // PrefixLexer.closeParen.09
         // a close paren then a space
         ") ",
         [")";" "],
@@ -938,15 +938,15 @@ let private closeParenStringTypeValues : (string * string list * (token * string
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.closeParen.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.closeParen.02")>]
-[<TestCase(2, TestName = "Lexer.closeParen.03")>]
-[<TestCase(3, TestName = "Lexer.closeParen.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(4, TestName = "Lexer.closeParen.05")>]
-[<TestCase(5, TestName = "Lexer.closeParen.06")>]
-[<TestCase(6, TestName = "Lexer.closeParen.07")>]
-[<TestCase(7, TestName = "Lexer.closeParen.08")>]
-[<TestCase(8, TestName = "Lexer.closeParen.09")>]
+[<TestCase(0, TestName = "PrefixLexer.closeParen.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.closeParen.02")>]
+[<TestCase(2, TestName = "PrefixLexer.closeParen.03")>]
+[<TestCase(3, TestName = "PrefixLexer.closeParen.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(4, TestName = "PrefixLexer.closeParen.05")>]
+[<TestCase(5, TestName = "PrefixLexer.closeParen.06")>]
+[<TestCase(6, TestName = "PrefixLexer.closeParen.07")>]
+[<TestCase(7, TestName = "PrefixLexer.closeParen.08")>]
+[<TestCase(8, TestName = "PrefixLexer.closeParen.09")>]
 let ``function closeParen - type string`` idx =
     let (externalForm, _, _) = closeParenStringTypeValues.[idx]
     let (_, internalForm, _) = closeParenStringTypeValues.[idx]
@@ -960,7 +960,7 @@ let ``function closeParen - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.closeParen
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.closeParen
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -977,16 +977,16 @@ let ``function closeParen - type string`` idx =
 let private commaStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.comma.01
+        // PrefixLexer.comma.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.comma function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.comma function reads this
         (OpenParen,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.comma.02
+        // PrefixLexer.comma.02
         // One comma
         ",",
         [","],
@@ -994,7 +994,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 2
-        // Lexer.comma.03
+        // PrefixLexer.comma.03
         // Two commas
         ",,",
         [",";","],
@@ -1002,7 +1002,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 3
-        // Lexer.comma.04
+        // PrefixLexer.comma.04
         // a letter then a comma
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "a,",
@@ -1011,7 +1011,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 4
-        // Lexer.comma.05
+        // PrefixLexer.comma.05
         // a comma then a letter
         ",a",
         [",";"a"],
@@ -1019,7 +1019,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 5
-        // Lexer.comma.06
+        // PrefixLexer.comma.06
         // a comma then an operator
         ",+",
         [",";"+"],
@@ -1027,7 +1027,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 6
-        // Lexer.comma.07
+        // PrefixLexer.comma.07
         // a comma then a decimal digit
         ",1",
         [",";"1"],
@@ -1035,7 +1035,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 7
-        // Lexer.comma.08
+        // PrefixLexer.comma.08
         // a comma then a open paren
         ",(",
         [",";"("],
@@ -1043,7 +1043,7 @@ let private commaStringTypeValues : (string * string list * (token * string list
     );
     (
         // idx 8
-        // Lexer.comma.09
+        // PrefixLexer.comma.09
         // a comma then a space
         ", ",
         [",";" "],
@@ -1052,15 +1052,15 @@ let private commaStringTypeValues : (string * string list * (token * string list
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.comma.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.comma.02")>]
-[<TestCase(2, TestName = "Lexer.comma.03")>]
-[<TestCase(3, TestName = "Lexer.comma.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(4, TestName = "Lexer.comma.05")>]
-[<TestCase(5, TestName = "Lexer.comma.06")>]
-[<TestCase(6, TestName = "Lexer.comma.07")>]
-[<TestCase(7, TestName = "Lexer.comma.08")>]
-[<TestCase(8, TestName = "Lexer.comma.09")>]
+[<TestCase(0, TestName = "PrefixLexer.comma.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.comma.02")>]
+[<TestCase(2, TestName = "PrefixLexer.comma.03")>]
+[<TestCase(3, TestName = "PrefixLexer.comma.04", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(4, TestName = "PrefixLexer.comma.05")>]
+[<TestCase(5, TestName = "PrefixLexer.comma.06")>]
+[<TestCase(6, TestName = "PrefixLexer.comma.07")>]
+[<TestCase(7, TestName = "PrefixLexer.comma.08")>]
+[<TestCase(8, TestName = "PrefixLexer.comma.09")>]
 let ``function comma - type string`` idx =
     let (externalForm, _, _) = commaStringTypeValues.[idx]
     let (_, internalForm, _) = commaStringTypeValues.[idx]
@@ -1074,7 +1074,7 @@ let ``function comma - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.comma
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.comma
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -1091,16 +1091,16 @@ let ``function comma - type string`` idx =
 let private operatorStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.operator.01
+        // PrefixLexer.operator.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.operator function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.operator function reads this
         (OpenParen,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.operator.02
+        // PrefixLexer.operator.02
         // One star
         "*",
         ["*"],
@@ -1108,7 +1108,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 2
-        // Lexer.operator.03
+        // PrefixLexer.operator.03
         // One plus
         "+",
         ["+"],
@@ -1116,7 +1116,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 3
-        // Lexer.operator.04
+        // PrefixLexer.operator.04
         // One dash
         "-",
         ["-"],
@@ -1124,7 +1124,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 4
-        // Lexer.operator.05
+        // PrefixLexer.operator.05
         // One slash
         "/",
         ["/"],
@@ -1132,7 +1132,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 5
-        // Lexer.operator.06
+        // PrefixLexer.operator.06
         // Two stars
         "**",
         ["*";"*"],
@@ -1140,7 +1140,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 6
-        // Lexer.operator.07
+        // PrefixLexer.operator.07
         // One start then one plus
         "*+",
         ["*";"+"],
@@ -1148,7 +1148,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 7
-        // Lexer.operator.08
+        // PrefixLexer.operator.08
         // a letter then a star
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "a*",
@@ -1157,7 +1157,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 8
-        // Lexer.operator.09
+        // PrefixLexer.operator.09
         // a star then a letter
         "*a",
         ["*";"a"],
@@ -1165,7 +1165,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 9
-        // Lexer.operator.010
+        // PrefixLexer.operator.010
         // a star then a decimal digit
         "*1",
         ["*";"1"],
@@ -1173,7 +1173,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 10
-        // Lexer.operator.011
+        // PrefixLexer.operator.011
         // a star then a open paren
         "*(",
         ["*";"("],
@@ -1181,7 +1181,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 11
-        // Lexer.operator.012
+        // PrefixLexer.operator.012
         // a star then a close paren
         "*)",
         ["*";")"],
@@ -1189,7 +1189,7 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 12
-        // Lexer.operator.013
+        // PrefixLexer.operator.013
         // a star then a space
         "* ",
         ["*";" "],
@@ -1198,18 +1198,18 @@ let private operatorStringTypeValues : (string * string list * (token * string l
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.operator.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.operator.02")>]
-[<TestCase(2, TestName = "Lexer.operator.03")>]
-[<TestCase(3, TestName = "Lexer.operator.04")>]
-[<TestCase(4, TestName = "Lexer.operator.05")>]
-[<TestCase(5, TestName = "Lexer.operator.06")>]
-[<TestCase(6, TestName = "Lexer.operator.07")>]
-[<TestCase(7, TestName = "Lexer.operator.08", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(8, TestName = "Lexer.operator.09")>]
-[<TestCase(9, TestName = "Lexer.operator.010")>]
-[<TestCase(10, TestName = "Lexer.operator.011")>]
-[<TestCase(11, TestName = "Lexer.operator.012")>]
+[<TestCase(0, TestName = "PrefixLexer.operator.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.operator.02")>]
+[<TestCase(2, TestName = "PrefixLexer.operator.03")>]
+[<TestCase(3, TestName = "PrefixLexer.operator.04")>]
+[<TestCase(4, TestName = "PrefixLexer.operator.05")>]
+[<TestCase(5, TestName = "PrefixLexer.operator.06")>]
+[<TestCase(6, TestName = "PrefixLexer.operator.07")>]
+[<TestCase(7, TestName = "PrefixLexer.operator.08", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(8, TestName = "PrefixLexer.operator.09")>]
+[<TestCase(9, TestName = "PrefixLexer.operator.010")>]
+[<TestCase(10, TestName = "PrefixLexer.operator.011")>]
+[<TestCase(11, TestName = "PrefixLexer.operator.012")>]
 let ``function operator - type string`` idx =
     let (externalForm, _, _) = operatorStringTypeValues.[idx]
     let (_, internalForm, _) = operatorStringTypeValues.[idx]
@@ -1223,7 +1223,7 @@ let ``function operator - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.operator
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.operator
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -1240,16 +1240,16 @@ let ``function operator - type string`` idx =
 let private rawtokenStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.rawtoken.01
+        // PrefixLexer.rawtoken.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.rawtoken function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.rawtoken function reads this
         (Comma,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.rawtoken.02
+        // PrefixLexer.rawtoken.02
         // One decimal digit
         "2",
         ["2"],
@@ -1257,7 +1257,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 2
-        // Lexer.rawtoken.03
+        // PrefixLexer.rawtoken.03
         // One open paren
         "(",
         ["("],
@@ -1265,7 +1265,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 3
-        // Lexer.rawtoken.04
+        // PrefixLexer.rawtoken.04
         // One close paren
         ")",
         [")"],
@@ -1273,7 +1273,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 4
-        // Lexer.rawtoken.05
+        // PrefixLexer.rawtoken.05
         // ONe comma
         ",",
         [","],
@@ -1281,7 +1281,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 5
-        // Lexer.rawtoken.06
+        // PrefixLexer.rawtoken.06
         // One operator
         "*",
         ["*"],
@@ -1289,7 +1289,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 6
-        // Lexer.rawtoken.07
+        // PrefixLexer.rawtoken.07
         // One space
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " ",
@@ -1299,7 +1299,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 7
-        // Lexer.rawtoken.08
+        // PrefixLexer.rawtoken.08
         // Two decimal digits
         "23",
         ["2";"3"],
@@ -1307,7 +1307,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 8
-        // Lexer.rawtoken.09
+        // PrefixLexer.rawtoken.09
         // One decimal digit then one open paren
         "2(",
         ["2";"("],
@@ -1315,7 +1315,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 9
-        // Lexer.rawtoken.010
+        // PrefixLexer.rawtoken.010
         // One decimal digit then one close paren
         "2)",
         ["2";")"],
@@ -1323,7 +1323,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 10
-        // Lexer.rawtoken.011
+        // PrefixLexer.rawtoken.011
         // One decimal digit then one comma
         "2,",
         ["2";","],
@@ -1331,7 +1331,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 11
-        // Lexer.rawtoken.012
+        // PrefixLexer.rawtoken.012
         // One decimal digit then one operator
         "2*",
         ["2";"*"],
@@ -1339,7 +1339,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 12
-        // Lexer.rawtoken.013
+        // PrefixLexer.rawtoken.013
         // One decimal digit then one space
         "2 ",
         ["2";" "],
@@ -1348,7 +1348,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 13
-        // Lexer.rawtoken.014
+        // PrefixLexer.rawtoken.014
         // One open paren then one decimal digit
         "(2",
         ["(";"2"],
@@ -1356,7 +1356,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 14
-        // Lexer.rawtoken.015
+        // PrefixLexer.rawtoken.015
         // Two open parens
         "((",
         ["(";"("],
@@ -1364,7 +1364,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 15
-        // Lexer.rawtoken.016
+        // PrefixLexer.rawtoken.016
         // One open paren then one close paren
         "()",
         ["(";")"],
@@ -1372,7 +1372,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 16
-        // Lexer.rawtoken.017
+        // PrefixLexer.rawtoken.017
         // One open paren then one comma
         "(,",
         ["(";","],
@@ -1380,7 +1380,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 17
-        // Lexer.rawtoken.018
+        // PrefixLexer.rawtoken.018
         // One open paren then one operator
         "(*",
         ["(";"*"],
@@ -1388,7 +1388,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 18
-        // Lexer.rawtoken.019
+        // PrefixLexer.rawtoken.019
         // One open paren then one space
         "( ",
         ["(";" "],
@@ -1397,7 +1397,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 19
-        // Lexer.rawtoken.020
+        // PrefixLexer.rawtoken.020
         // One close paren then one decimal digit
         ")2",
         [")";"2"],
@@ -1405,7 +1405,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 20
-        // Lexer.rawtoken.021
+        // PrefixLexer.rawtoken.021
         // One close paren then one open paren
         ")(",
         [")";"("],
@@ -1413,7 +1413,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 21
-        // Lexer.rawtoken.022
+        // PrefixLexer.rawtoken.022
         // Two close parens
         "))",
         [")";")"],
@@ -1421,7 +1421,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 22
-        // Lexer.rawtoken.023
+        // PrefixLexer.rawtoken.023
         // One close paren then one comma
         "),",
         [")";","],
@@ -1429,7 +1429,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 23
-        // Lexer.rawtoken.024
+        // PrefixLexer.rawtoken.024
         // One close paren then one operator
         ")*",
         [")";"*"],
@@ -1437,7 +1437,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 24
-        // Lexer.rawtoken.025
+        // PrefixLexer.rawtoken.025
         // One close paren then one space
         ") ",
         [")";" "],
@@ -1446,7 +1446,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 25
-        // Lexer.rawtoken.026
+        // PrefixLexer.rawtoken.026
         // One comma then one decimal digit
         ",2",
         [",";"2"],
@@ -1454,7 +1454,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 26
-        // Lexer.rawtoken.027
+        // PrefixLexer.rawtoken.027
         // One comma then one comma
         ",(",
         [",";"("],
@@ -1462,7 +1462,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 27
-        // Lexer.rawtoken.028
+        // PrefixLexer.rawtoken.028
         // One comma then one close paren
         ",)",
         [",";")"],
@@ -1470,7 +1470,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 28
-        // Lexer.rawtoken.029
+        // PrefixLexer.rawtoken.029
         // Two commas
         ",,",
         [",";","],
@@ -1478,7 +1478,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 29
-        // Lexer.rawtoken.030
+        // PrefixLexer.rawtoken.030
         // One comma then one operator
         ",*",
         [",";"*"],
@@ -1486,7 +1486,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 30
-        // Lexer.rawtoken.031
+        // PrefixLexer.rawtoken.031
         // One comma then one space
         ", ",
         [",";" "],
@@ -1495,7 +1495,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 31
-        // Lexer.rawtoken.032
+        // PrefixLexer.rawtoken.032
         // One operator then one decimal digit
         "*2",
         ["*";"2"],
@@ -1503,7 +1503,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 32
-        // Lexer.rawtoken.033
+        // PrefixLexer.rawtoken.033
         // One operator then one operator
         "*(",
         ["*";"("],
@@ -1511,7 +1511,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 33
-        // Lexer.rawtoken.034
+        // PrefixLexer.rawtoken.034
         // One operator then one close paren
         "*)",
         ["*";")"],
@@ -1519,7 +1519,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 34
-        // Lexer.rawtoken.035
+        // PrefixLexer.rawtoken.035
         // One operator then one comma
         "*,",
         ["*";","],
@@ -1527,7 +1527,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 35
-        // Lexer.rawtoken.036
+        // PrefixLexer.rawtoken.036
         // Two operators
         "**",
         ["*";"*"],
@@ -1535,7 +1535,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 36
-        // Lexer.rawtoken.037
+        // PrefixLexer.rawtoken.037
         // One operator then one space
         "* ",
         ["*";" "],
@@ -1544,7 +1544,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
 
     (
         // idx 37
-        // Lexer.rawtoken.038
+        // PrefixLexer.rawtoken.038
         // One whitespace then one decimal digit
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " 2",
@@ -1553,7 +1553,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 38
-        // Lexer.rawtoken.039
+        // PrefixLexer.rawtoken.039
         // One whitespace then one operator
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " (",
@@ -1562,7 +1562,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 39
-        // Lexer.rawtoken.040
+        // PrefixLexer.rawtoken.040
         // One whitespace then one close paren
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " )",
@@ -1571,7 +1571,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 40
-        // Lexer.rawtoken.041
+        // PrefixLexer.rawtoken.041
         // One whitespace then one comma
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " ,",
@@ -1580,7 +1580,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 41
-        // Lexer.rawtoken.042
+        // PrefixLexer.rawtoken.042
         // One whitespace then one operator
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         " *",
@@ -1589,7 +1589,7 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     );
     (
         // idx 42
-        // Lexer.rawtoken.043
+        // PrefixLexer.rawtoken.043
         // Two whitewhitespace
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "  ",
@@ -1601,49 +1601,49 @@ let private rawtokenStringTypeValues : (string * string list * (token * string l
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.rawtoken.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.rawtoken.02")>]
-[<TestCase(2, TestName = "Lexer.rawtoken.03")>]
-[<TestCase(3, TestName = "Lexer.rawtoken.04")>]
-[<TestCase(4, TestName = "Lexer.rawtoken.05")>]
-[<TestCase(5, TestName = "Lexer.rawtoken.06")>]
-[<TestCase(6, TestName = "Lexer.rawtoken.07", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(7, TestName = "Lexer.rawtoken.08")>]
-[<TestCase(8, TestName = "Lexer.rawtoken.09")>]
-[<TestCase(9, TestName = "Lexer.rawtoken.010")>]
-[<TestCase(10, TestName = "Lexer.rawtoken.011")>]
-[<TestCase(11, TestName = "Lexer.rawtoken.012")>]
-[<TestCase(12, TestName = "Lexer.rawtoken.013")>]
-[<TestCase(13, TestName = "Lexer.rawtoken.014")>]
-[<TestCase(14, TestName = "Lexer.rawtoken.015")>]
-[<TestCase(15, TestName = "Lexer.rawtoken.016")>]
-[<TestCase(16, TestName = "Lexer.rawtoken.017")>]
-[<TestCase(17, TestName = "Lexer.rawtoken.018")>]
-[<TestCase(18, TestName = "Lexer.rawtoken.019")>]
-[<TestCase(19, TestName = "Lexer.rawtoken.020")>]
-[<TestCase(20, TestName = "Lexer.rawtoken.021")>]
-[<TestCase(21, TestName = "Lexer.rawtoken.022")>]
-[<TestCase(22, TestName = "Lexer.rawtoken.023")>]
-[<TestCase(23, TestName = "Lexer.rawtoken.024")>]
-[<TestCase(24, TestName = "Lexer.rawtoken.025")>]
-[<TestCase(25, TestName = "Lexer.rawtoken.026")>]
-[<TestCase(26, TestName = "Lexer.rawtoken.027")>]
-[<TestCase(27, TestName = "Lexer.rawtoken.028")>]
-[<TestCase(28, TestName = "Lexer.rawtoken.029")>]
-[<TestCase(29, TestName = "Lexer.rawtoken.030")>]
-[<TestCase(30, TestName = "Lexer.rawtoken.031")>]
-[<TestCase(31, TestName = "Lexer.rawtoken.032")>]
-[<TestCase(32, TestName = "Lexer.rawtoken.033")>]
-[<TestCase(33, TestName = "Lexer.rawtoken.034")>]
-[<TestCase(34, TestName = "Lexer.rawtoken.035")>]
-[<TestCase(35, TestName = "Lexer.rawtoken.036")>]
-[<TestCase(36, TestName = "Lexer.rawtoken.037")>]
-[<TestCase(37, TestName = "Lexer.rawtoken.038", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(38, TestName = "Lexer.rawtoken.039", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(39, TestName = "Lexer.rawtoken.040", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(40, TestName = "Lexer.rawtoken.041", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(41, TestName = "Lexer.rawtoken.042", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(42, TestName = "Lexer.rawtoken.043", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(0, TestName = "PrefixLexer.rawtoken.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.rawtoken.02")>]
+[<TestCase(2, TestName = "PrefixLexer.rawtoken.03")>]
+[<TestCase(3, TestName = "PrefixLexer.rawtoken.04")>]
+[<TestCase(4, TestName = "PrefixLexer.rawtoken.05")>]
+[<TestCase(5, TestName = "PrefixLexer.rawtoken.06")>]
+[<TestCase(6, TestName = "PrefixLexer.rawtoken.07", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(7, TestName = "PrefixLexer.rawtoken.08")>]
+[<TestCase(8, TestName = "PrefixLexer.rawtoken.09")>]
+[<TestCase(9, TestName = "PrefixLexer.rawtoken.010")>]
+[<TestCase(10, TestName = "PrefixLexer.rawtoken.011")>]
+[<TestCase(11, TestName = "PrefixLexer.rawtoken.012")>]
+[<TestCase(12, TestName = "PrefixLexer.rawtoken.013")>]
+[<TestCase(13, TestName = "PrefixLexer.rawtoken.014")>]
+[<TestCase(14, TestName = "PrefixLexer.rawtoken.015")>]
+[<TestCase(15, TestName = "PrefixLexer.rawtoken.016")>]
+[<TestCase(16, TestName = "PrefixLexer.rawtoken.017")>]
+[<TestCase(17, TestName = "PrefixLexer.rawtoken.018")>]
+[<TestCase(18, TestName = "PrefixLexer.rawtoken.019")>]
+[<TestCase(19, TestName = "PrefixLexer.rawtoken.020")>]
+[<TestCase(20, TestName = "PrefixLexer.rawtoken.021")>]
+[<TestCase(21, TestName = "PrefixLexer.rawtoken.022")>]
+[<TestCase(22, TestName = "PrefixLexer.rawtoken.023")>]
+[<TestCase(23, TestName = "PrefixLexer.rawtoken.024")>]
+[<TestCase(24, TestName = "PrefixLexer.rawtoken.025")>]
+[<TestCase(25, TestName = "PrefixLexer.rawtoken.026")>]
+[<TestCase(26, TestName = "PrefixLexer.rawtoken.027")>]
+[<TestCase(27, TestName = "PrefixLexer.rawtoken.028")>]
+[<TestCase(28, TestName = "PrefixLexer.rawtoken.029")>]
+[<TestCase(29, TestName = "PrefixLexer.rawtoken.030")>]
+[<TestCase(30, TestName = "PrefixLexer.rawtoken.031")>]
+[<TestCase(31, TestName = "PrefixLexer.rawtoken.032")>]
+[<TestCase(32, TestName = "PrefixLexer.rawtoken.033")>]
+[<TestCase(33, TestName = "PrefixLexer.rawtoken.034")>]
+[<TestCase(34, TestName = "PrefixLexer.rawtoken.035")>]
+[<TestCase(35, TestName = "PrefixLexer.rawtoken.036")>]
+[<TestCase(36, TestName = "PrefixLexer.rawtoken.037")>]
+[<TestCase(37, TestName = "PrefixLexer.rawtoken.038", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(38, TestName = "PrefixLexer.rawtoken.039", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(39, TestName = "PrefixLexer.rawtoken.040", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(40, TestName = "PrefixLexer.rawtoken.041", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(41, TestName = "PrefixLexer.rawtoken.042", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(42, TestName = "PrefixLexer.rawtoken.043", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
 let ``function rawtoken - type string`` idx =
     let (externalForm, _, _) = rawtokenStringTypeValues.[idx]
     let (_, internalForm, _) = rawtokenStringTypeValues.[idx]
@@ -1657,7 +1657,7 @@ let ``function rawtoken - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.rawtoken
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.rawtoken
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -1674,16 +1674,16 @@ let ``function rawtoken - type string`` idx =
 let private spacedtokenStringTypeValues : (string * string list * (token * string list))[] = [|
     (
         // idx 0
-        // Lexer.spacedtoken.01
+        // PrefixLexer.spacedtoken.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.spacedtoken function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.spacedtoken function reads this
         (Comma,[])  // dummy value
     );
     (
         // idx 1
-        // Lexer.spacedtoken.02
+        // PrefixLexer.spacedtoken.02
         // One decimal digit
         "2",
         ["2"],
@@ -1691,7 +1691,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 2
-        // Lexer.spacedtoken.03
+        // PrefixLexer.spacedtoken.03
         // One open paren
         "(",
         ["("],
@@ -1699,7 +1699,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 3
-        // Lexer.spacedtoken.04
+        // PrefixLexer.spacedtoken.04
         // One close paren
         ")",
         [")"],
@@ -1707,7 +1707,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 4
-        // Lexer.spacedtoken.05
+        // PrefixLexer.spacedtoken.05
         // ONe comma
         ",",
         [","],
@@ -1715,7 +1715,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 5
-        // Lexer.spacedtoken.06
+        // PrefixLexer.spacedtoken.06
         // One operator
         "*",
         ["*"],
@@ -1723,7 +1723,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 6
-        // Lexer.spacedtoken.07
+        // PrefixLexer.spacedtoken.07
         // One space
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // Throws error because a rawtoken is expected after space character
@@ -1735,7 +1735,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 7
-        // Lexer.spacedtoken.08
+        // PrefixLexer.spacedtoken.08
         // Two decimal digits
         "23",
         ["2";"3"],
@@ -1743,7 +1743,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 8
-        // Lexer.spacedtoken.09
+        // PrefixLexer.spacedtoken.09
         // One decimal digit then one open paren
         "2(",
         ["2";"("],
@@ -1751,7 +1751,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 9
-        // Lexer.spacedtoken.010
+        // PrefixLexer.spacedtoken.010
         // One decimal digit then one close paren
         "2)",
         ["2";")"],
@@ -1759,7 +1759,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 10
-        // Lexer.spacedtoken.011
+        // PrefixLexer.spacedtoken.011
         // One decimal digit then one comma
         "2,",
         ["2";","],
@@ -1767,7 +1767,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 11
-        // Lexer.spacedtoken.012
+        // PrefixLexer.spacedtoken.012
         // One decimal digit then one operator
         "2*",
         ["2";"*"],
@@ -1775,7 +1775,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 12
-        // Lexer.spacedtoken.013
+        // PrefixLexer.spacedtoken.013
         // One decimal digit then one space
         "2 ",
         ["2";" "],
@@ -1784,7 +1784,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 13
-        // Lexer.spacedtoken.014
+        // PrefixLexer.spacedtoken.014
         // One open paren then one decimal digit
         "(2",
         ["(";"2"],
@@ -1792,7 +1792,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 14
-        // Lexer.spacedtoken.015
+        // PrefixLexer.spacedtoken.015
         // Two open parens
         "((",
         ["(";"("],
@@ -1800,7 +1800,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 15
-        // Lexer.spacedtoken.016
+        // PrefixLexer.spacedtoken.016
         // One open paren then one close paren
         "()",
         ["(";")"],
@@ -1808,7 +1808,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 16
-        // Lexer.spacedtoken.017
+        // PrefixLexer.spacedtoken.017
         // One open paren then one comma
         "(,",
         ["(";","],
@@ -1816,7 +1816,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 17
-        // Lexer.spacedtoken.018
+        // PrefixLexer.spacedtoken.018
         // One open paren then one operator
         "(*",
         ["(";"*"],
@@ -1824,7 +1824,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 18
-        // Lexer.spacedtoken.019
+        // PrefixLexer.spacedtoken.019
         // One open paren then one space
         "( ",
         ["(";" "],
@@ -1833,7 +1833,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 19
-        // Lexer.spacedtoken.020
+        // PrefixLexer.spacedtoken.020
         // One close paren then one decimal digit
         ")2",
         [")";"2"],
@@ -1841,7 +1841,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 20
-        // Lexer.spacedtoken.021
+        // PrefixLexer.spacedtoken.021
         // One close paren then one open paren
         ")(",
         [")";"("],
@@ -1849,7 +1849,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 21
-        // Lexer.spacedtoken.022
+        // PrefixLexer.spacedtoken.022
         // Two close parens
         "))",
         [")";")"],
@@ -1857,7 +1857,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 22
-        // Lexer.spacedtoken.023
+        // PrefixLexer.spacedtoken.023
         // One close paren then one comma
         "),",
         [")";","],
@@ -1865,7 +1865,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 23
-        // Lexer.spacedtoken.024
+        // PrefixLexer.spacedtoken.024
         // One close paren then one operator
         ")*",
         [")";"*"],
@@ -1873,7 +1873,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 24
-        // Lexer.spacedtoken.025
+        // PrefixLexer.spacedtoken.025
         // One close paren then one space
         ") ",
         [")";" "],
@@ -1882,7 +1882,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 25
-        // Lexer.spacedtoken.026
+        // PrefixLexer.spacedtoken.026
         // One comma then one decimal digit
         ",2",
         [",";"2"],
@@ -1890,7 +1890,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 26
-        // Lexer.spacedtoken.027
+        // PrefixLexer.spacedtoken.027
         // One comma then one comma
         ",(",
         [",";"("],
@@ -1898,7 +1898,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 27
-        // Lexer.spacedtoken.028
+        // PrefixLexer.spacedtoken.028
         // One comma then one close paren
         ",)",
         [",";")"],
@@ -1906,7 +1906,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 28
-        // Lexer.spacedtoken.029
+        // PrefixLexer.spacedtoken.029
         // Two commas
         ",,",
         [",";","],
@@ -1914,7 +1914,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 29
-        // Lexer.spacedtoken.030
+        // PrefixLexer.spacedtoken.030
         // One comma then one operator
         ",*",
         [",";"*"],
@@ -1922,7 +1922,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 30
-        // Lexer.spacedtoken.031
+        // PrefixLexer.spacedtoken.031
         // One comma then one space
         ", ",
         [",";" "],
@@ -1931,7 +1931,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 31
-        // Lexer.spacedtoken.032
+        // PrefixLexer.spacedtoken.032
         // One operator then one decimal digit
         "*2",
         ["*";"2"],
@@ -1939,7 +1939,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 32
-        // Lexer.spacedtoken.033
+        // PrefixLexer.spacedtoken.033
         // One operator then one operator
         "*(",
         ["*";"("],
@@ -1947,7 +1947,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 33
-        // Lexer.spacedtoken.034
+        // PrefixLexer.spacedtoken.034
         // One operator then one close paren
         "*)",
         ["*";")"],
@@ -1955,7 +1955,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 34
-        // Lexer.spacedtoken.035
+        // PrefixLexer.spacedtoken.035
         // One operator then one comma
         "*,",
         ["*";","],
@@ -1963,7 +1963,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 35
-        // Lexer.spacedtoken.036
+        // PrefixLexer.spacedtoken.036
         // Two operators
         "**",
         ["*";"*"],
@@ -1971,7 +1971,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 36
-        // Lexer.spacedtoken.037
+        // PrefixLexer.spacedtoken.037
         // One operator then one space
         "* ",
         ["*";" "],
@@ -1980,7 +1980,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
 
     (
         // idx 37
-        // Lexer.spacedtoken.038
+        // PrefixLexer.spacedtoken.038
         // One whitespace then one decimal digit
         " 2",
         [" ";"2"],
@@ -1988,7 +1988,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 38
-        // Lexer.spacedtoken.039
+        // PrefixLexer.spacedtoken.039
         // One whitespace then one operator
         " (",
         [" ";"("],
@@ -1996,7 +1996,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 39
-        // Lexer.spacedtoken.040
+        // PrefixLexer.spacedtoken.040
         // One whitespace then one close paren
         " )",
         [" ";")"],
@@ -2004,7 +2004,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 40
-        // Lexer.spacedtoken.041
+        // PrefixLexer.spacedtoken.041
         // One whitespace then one comma
         " ,",
         [" ";","],
@@ -2012,7 +2012,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 41
-        // Lexer.spacedtoken.042
+        // PrefixLexer.spacedtoken.042
         // One whitespace then one operator
         " *",
         [" ";"*"],
@@ -2020,7 +2020,7 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     );
     (
         // idx 42
-        // Lexer.spacedtoken.043
+        // PrefixLexer.spacedtoken.043
         // Two whitewhitespace
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         "  ",
@@ -2032,49 +2032,49 @@ let private spacedtokenStringTypeValues : (string * string list * (token * strin
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.spacedtoken.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(1, TestName = "Lexer.spacedtoken.02")>]
-[<TestCase(2, TestName = "Lexer.spacedtoken.03")>]
-[<TestCase(3, TestName = "Lexer.spacedtoken.04")>]
-[<TestCase(4, TestName = "Lexer.spacedtoken.05")>]
-[<TestCase(5, TestName = "Lexer.spacedtoken.06")>]
-[<TestCase(6, TestName = "Lexer.spacedtoken.07", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
-[<TestCase(7, TestName = "Lexer.spacedtoken.08")>]
-[<TestCase(8, TestName = "Lexer.spacedtoken.09")>]
-[<TestCase(9, TestName = "Lexer.spacedtoken.010")>]
-[<TestCase(10, TestName = "Lexer.spacedtoken.011")>]
-[<TestCase(11, TestName = "Lexer.spacedtoken.012")>]
-[<TestCase(12, TestName = "Lexer.spacedtoken.013")>]
-[<TestCase(13, TestName = "Lexer.spacedtoken.014")>]
-[<TestCase(14, TestName = "Lexer.spacedtoken.015")>]
-[<TestCase(15, TestName = "Lexer.spacedtoken.016")>]
-[<TestCase(16, TestName = "Lexer.spacedtoken.017")>]
-[<TestCase(17, TestName = "Lexer.spacedtoken.018")>]
-[<TestCase(18, TestName = "Lexer.spacedtoken.019")>]
-[<TestCase(19, TestName = "Lexer.spacedtoken.020")>]
-[<TestCase(20, TestName = "Lexer.spacedtoken.021")>]
-[<TestCase(21, TestName = "Lexer.spacedtoken.022")>]
-[<TestCase(22, TestName = "Lexer.spacedtoken.023")>]
-[<TestCase(23, TestName = "Lexer.spacedtoken.024")>]
-[<TestCase(24, TestName = "Lexer.spacedtoken.025")>]
-[<TestCase(25, TestName = "Lexer.spacedtoken.026")>]
-[<TestCase(26, TestName = "Lexer.spacedtoken.027")>]
-[<TestCase(27, TestName = "Lexer.spacedtoken.028")>]
-[<TestCase(28, TestName = "Lexer.spacedtoken.029")>]
-[<TestCase(29, TestName = "Lexer.spacedtoken.030")>]
-[<TestCase(30, TestName = "Lexer.spacedtoken.031")>]
-[<TestCase(31, TestName = "Lexer.spacedtoken.032")>]
-[<TestCase(32, TestName = "Lexer.spacedtoken.033")>]
-[<TestCase(33, TestName = "Lexer.spacedtoken.034")>]
-[<TestCase(34, TestName = "Lexer.spacedtoken.035")>]
-[<TestCase(35, TestName = "Lexer.spacedtoken.036")>]
-[<TestCase(36, TestName = "Lexer.spacedtoken.037")>]
-[<TestCase(37, TestName = "Lexer.spacedtoken.038")>]
-[<TestCase(38, TestName = "Lexer.spacedtoken.039")>]
-[<TestCase(39, TestName = "Lexer.spacedtoken.040")>]
-[<TestCase(40, TestName = "Lexer.spacedtoken.041")>]
-[<TestCase(41, TestName = "Lexer.spacedtoken.042")>]
-[<TestCase(42, TestName = "Lexer.spacedtoken.043", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(0, TestName = "PrefixLexer.spacedtoken.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "PrefixLexer.spacedtoken.02")>]
+[<TestCase(2, TestName = "PrefixLexer.spacedtoken.03")>]
+[<TestCase(3, TestName = "PrefixLexer.spacedtoken.04")>]
+[<TestCase(4, TestName = "PrefixLexer.spacedtoken.05")>]
+[<TestCase(5, TestName = "PrefixLexer.spacedtoken.06")>]
+[<TestCase(6, TestName = "PrefixLexer.spacedtoken.07", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(7, TestName = "PrefixLexer.spacedtoken.08")>]
+[<TestCase(8, TestName = "PrefixLexer.spacedtoken.09")>]
+[<TestCase(9, TestName = "PrefixLexer.spacedtoken.010")>]
+[<TestCase(10, TestName = "PrefixLexer.spacedtoken.011")>]
+[<TestCase(11, TestName = "PrefixLexer.spacedtoken.012")>]
+[<TestCase(12, TestName = "PrefixLexer.spacedtoken.013")>]
+[<TestCase(13, TestName = "PrefixLexer.spacedtoken.014")>]
+[<TestCase(14, TestName = "PrefixLexer.spacedtoken.015")>]
+[<TestCase(15, TestName = "PrefixLexer.spacedtoken.016")>]
+[<TestCase(16, TestName = "PrefixLexer.spacedtoken.017")>]
+[<TestCase(17, TestName = "PrefixLexer.spacedtoken.018")>]
+[<TestCase(18, TestName = "PrefixLexer.spacedtoken.019")>]
+[<TestCase(19, TestName = "PrefixLexer.spacedtoken.020")>]
+[<TestCase(20, TestName = "PrefixLexer.spacedtoken.021")>]
+[<TestCase(21, TestName = "PrefixLexer.spacedtoken.022")>]
+[<TestCase(22, TestName = "PrefixLexer.spacedtoken.023")>]
+[<TestCase(23, TestName = "PrefixLexer.spacedtoken.024")>]
+[<TestCase(24, TestName = "PrefixLexer.spacedtoken.025")>]
+[<TestCase(25, TestName = "PrefixLexer.spacedtoken.026")>]
+[<TestCase(26, TestName = "PrefixLexer.spacedtoken.027")>]
+[<TestCase(27, TestName = "PrefixLexer.spacedtoken.028")>]
+[<TestCase(28, TestName = "PrefixLexer.spacedtoken.029")>]
+[<TestCase(29, TestName = "PrefixLexer.spacedtoken.030")>]
+[<TestCase(30, TestName = "PrefixLexer.spacedtoken.031")>]
+[<TestCase(31, TestName = "PrefixLexer.spacedtoken.032")>]
+[<TestCase(32, TestName = "PrefixLexer.spacedtoken.033")>]
+[<TestCase(33, TestName = "PrefixLexer.spacedtoken.034")>]
+[<TestCase(34, TestName = "PrefixLexer.spacedtoken.035")>]
+[<TestCase(35, TestName = "PrefixLexer.spacedtoken.036")>]
+[<TestCase(36, TestName = "PrefixLexer.spacedtoken.037")>]
+[<TestCase(37, TestName = "PrefixLexer.spacedtoken.038")>]
+[<TestCase(38, TestName = "PrefixLexer.spacedtoken.039")>]
+[<TestCase(39, TestName = "PrefixLexer.spacedtoken.040")>]
+[<TestCase(40, TestName = "PrefixLexer.spacedtoken.041")>]
+[<TestCase(41, TestName = "PrefixLexer.spacedtoken.042")>]
+[<TestCase(42, TestName = "PrefixLexer.spacedtoken.043", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
 let ``function spacedtoken - type string`` idx =
     let (externalForm, _, _) = spacedtokenStringTypeValues.[idx]
     let (_, internalForm, _) = spacedtokenStringTypeValues.[idx]
@@ -2088,7 +2088,7 @@ let ``function spacedtoken - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.Lexer.spacedtoken
+    let stringParser : string list -> token * string list = ArithmeticExpressionEvaluator.PrefixLexer.spacedtoken
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -2105,16 +2105,16 @@ let ``function spacedtoken - type string`` idx =
 let private tokensStringTypeValues : (string * string list * (token list * string list))[] = [|
     (
         // idx 0
-        // Lexer.tokens.01
+        // PrefixLexer.tokens.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.tokens function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.tokens function reads this
         ([],[])  // Notice no exception for empty list.
     );
     (
         // idx 1
-        // Lexer.tokens.02
+        // PrefixLexer.tokens.02
         // One decimal digit
         "2",
         ["2"],
@@ -2122,7 +2122,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 2
-        // Lexer.tokens.03
+        // PrefixLexer.tokens.03
         // One open paren
         "(",
         ["("],
@@ -2130,7 +2130,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 3
-        // Lexer.tokens.04
+        // PrefixLexer.tokens.04
         // One close paren
         ")",
         [")"],
@@ -2138,7 +2138,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 4
-        // Lexer.tokens.05
+        // PrefixLexer.tokens.05
         // ONe comma
         ",",
         [","],
@@ -2146,7 +2146,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 5
-        // Lexer.tokens.06
+        // PrefixLexer.tokens.06
         // One operator
         "*",
         ["*"],
@@ -2154,7 +2154,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 6
-        // Lexer.tokens.07
+        // PrefixLexer.tokens.07
         // One space
         " ",
         [" "],
@@ -2163,7 +2163,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 7
-        // Lexer.tokens.08
+        // PrefixLexer.tokens.08
         // Two decimal digits
         "23",
         ["2";"3"],
@@ -2171,7 +2171,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 8
-        // Lexer.tokens.09
+        // PrefixLexer.tokens.09
         // One decimal digit then one open paren
         "2(",
         ["2";"("],
@@ -2179,7 +2179,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 9
-        // Lexer.tokens.010
+        // PrefixLexer.tokens.010
         // One decimal digit then one close paren
         "2)",
         ["2";")"],
@@ -2187,7 +2187,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 10
-        // Lexer.tokens.011
+        // PrefixLexer.tokens.011
         // One decimal digit then one comma
         "2,",
         ["2";","],
@@ -2195,7 +2195,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 11
-        // Lexer.tokens.012
+        // PrefixLexer.tokens.012
         // One decimal digit then one operator
         "2*",
         ["2";"*"],
@@ -2203,7 +2203,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 12
-        // Lexer.tokens.013
+        // PrefixLexer.tokens.013
         // One decimal digit then one space
         "2 ",
         ["2";" "],
@@ -2212,7 +2212,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 13
-        // Lexer.tokens.014
+        // PrefixLexer.tokens.014
         // One open paren then one decimal digit
         "(2",
         ["(";"2"],
@@ -2220,7 +2220,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 14
-        // Lexer.tokens.015
+        // PrefixLexer.tokens.015
         // Two open parens
         "((",
         ["(";"("],
@@ -2228,7 +2228,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 15
-        // Lexer.tokens.016
+        // PrefixLexer.tokens.016
         // One open paren then one close paren
         "()",
         ["(";")"],
@@ -2236,7 +2236,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 16
-        // Lexer.tokens.017
+        // PrefixLexer.tokens.017
         // One open paren then one comma
         "(,",
         ["(";","],
@@ -2244,7 +2244,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 17
-        // Lexer.tokens.018
+        // PrefixLexer.tokens.018
         // One open paren then one operator
         "(*",
         ["(";"*"],
@@ -2252,7 +2252,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 18
-        // Lexer.tokens.019
+        // PrefixLexer.tokens.019
         // One open paren then one space
         "( ",
         ["(";" "],
@@ -2261,7 +2261,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 19
-        // Lexer.tokens.020
+        // PrefixLexer.tokens.020
         // One close paren then one decimal digit
         ")2",
         [")";"2"],
@@ -2269,7 +2269,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 20
-        // Lexer.tokens.021
+        // PrefixLexer.tokens.021
         // One close paren then one open paren
         ")(",
         [")";"("],
@@ -2277,7 +2277,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 21
-        // Lexer.tokens.022
+        // PrefixLexer.tokens.022
         // Two close parens
         "))",
         [")";")"],
@@ -2285,7 +2285,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 22
-        // Lexer.tokens.023
+        // PrefixLexer.tokens.023
         // One close paren then one comma
         "),",
         [")";","],
@@ -2293,7 +2293,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 23
-        // Lexer.tokens.024
+        // PrefixLexer.tokens.024
         // One close paren then one operator
         ")*",
         [")";"*"],
@@ -2301,7 +2301,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 24
-        // Lexer.tokens.025
+        // PrefixLexer.tokens.025
         // One close paren then one space
         ") ",
         [")";" "],
@@ -2310,7 +2310,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 25
-        // Lexer.tokens.026
+        // PrefixLexer.tokens.026
         // One comma then one decimal digit
         ",2",
         [",";"2"],
@@ -2318,7 +2318,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 26
-        // Lexer.tokens.027
+        // PrefixLexer.tokens.027
         // One comma then one comma
         ",(",
         [",";"("],
@@ -2326,7 +2326,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 27
-        // Lexer.tokens.028
+        // PrefixLexer.tokens.028
         // One comma then one close paren
         ",)",
         [",";")"],
@@ -2334,7 +2334,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 28
-        // Lexer.tokens.029
+        // PrefixLexer.tokens.029
         // Two commas
         ",,",
         [",";","],
@@ -2342,7 +2342,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 29
-        // Lexer.tokens.030
+        // PrefixLexer.tokens.030
         // One comma then one operator
         ",*",
         [",";"*"],
@@ -2350,7 +2350,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 30
-        // Lexer.tokens.031
+        // PrefixLexer.tokens.031
         // One comma then one space
         ", ",
         [",";" "],
@@ -2359,7 +2359,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 31
-        // Lexer.tokens.032
+        // PrefixLexer.tokens.032
         // One operator then one decimal digit
         "*2",
         ["*";"2"],
@@ -2367,7 +2367,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 32
-        // Lexer.tokens.033
+        // PrefixLexer.tokens.033
         // One operator then one operator
         "*(",
         ["*";"("],
@@ -2375,7 +2375,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 33
-        // Lexer.tokens.034
+        // PrefixLexer.tokens.034
         // One operator then one close paren
         "*)",
         ["*";")"],
@@ -2383,7 +2383,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 34
-        // Lexer.tokens.035
+        // PrefixLexer.tokens.035
         // One operator then one comma
         "*,",
         ["*";","],
@@ -2391,7 +2391,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 35
-        // Lexer.tokens.036
+        // PrefixLexer.tokens.036
         // Two operators
         "**",
         ["*";"*"],
@@ -2399,7 +2399,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 36
-        // Lexer.tokens.037
+        // PrefixLexer.tokens.037
         // One operator then one space
         "* ",
         ["*";" "],
@@ -2408,7 +2408,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
 
     (
         // idx 37
-        // Lexer.tokens.038
+        // PrefixLexer.tokens.038
         // One whitespace then one decimal digit
         " 2",
         [" ";"2"],
@@ -2416,7 +2416,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 38
-        // Lexer.tokens.039
+        // PrefixLexer.tokens.039
         // One whitespace then one operator
         " (",
         [" ";"("],
@@ -2424,7 +2424,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 39
-        // Lexer.tokens.040
+        // PrefixLexer.tokens.040
         // One whitespace then one close paren
         " )",
         [" ";")"],
@@ -2432,7 +2432,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 40
-        // Lexer.tokens.041
+        // PrefixLexer.tokens.041
         // One whitespace then one comma
         " ,",
         [" ";","],
@@ -2440,7 +2440,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 41
-        // Lexer.tokens.042
+        // PrefixLexer.tokens.042
         // One whitespace then one operator
         " *",
         [" ";"*"],
@@ -2448,7 +2448,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 42
-        // Lexer.tokens.043
+        // PrefixLexer.tokens.043
         // Two whitewhitespace
         "  ",
         [" ";" "],
@@ -2456,7 +2456,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 43
-        // Lexer.tokens.044
+        // PrefixLexer.tokens.044
         // One alpha character
         "a",
         ["a"],
@@ -2464,7 +2464,7 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     );
     (
         // idx 44
-        // Lexer.tokens.045
+        // PrefixLexer.tokens.045
         // One alpha character
         "1 ",
         ["1"; " "],
@@ -2473,51 +2473,51 @@ let private tokensStringTypeValues : (string * string list * (token list * strin
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.tokens.01")>]
-[<TestCase(1, TestName = "Lexer.tokens.02")>]
-[<TestCase(2, TestName = "Lexer.tokens.03")>]
-[<TestCase(3, TestName = "Lexer.tokens.04")>]
-[<TestCase(4, TestName = "Lexer.tokens.05")>]
-[<TestCase(5, TestName = "Lexer.tokens.06")>]
-[<TestCase(6, TestName = "Lexer.tokens.07")>]
-[<TestCase(7, TestName = "Lexer.tokens.08")>]
-[<TestCase(8, TestName = "Lexer.tokens.09")>]
-[<TestCase(9, TestName = "Lexer.tokens.010")>]
-[<TestCase(10, TestName = "Lexer.tokens.011")>]
-[<TestCase(11, TestName = "Lexer.tokens.012")>]
-[<TestCase(12, TestName = "Lexer.tokens.013")>]
-[<TestCase(13, TestName = "Lexer.tokens.014")>]
-[<TestCase(14, TestName = "Lexer.tokens.015")>]
-[<TestCase(15, TestName = "Lexer.tokens.016")>]
-[<TestCase(16, TestName = "Lexer.tokens.017")>]
-[<TestCase(17, TestName = "Lexer.tokens.018")>]
-[<TestCase(18, TestName = "Lexer.tokens.019")>]
-[<TestCase(19, TestName = "Lexer.tokens.020")>]
-[<TestCase(20, TestName = "Lexer.tokens.021")>]
-[<TestCase(21, TestName = "Lexer.tokens.022")>]
-[<TestCase(22, TestName = "Lexer.tokens.023")>]
-[<TestCase(23, TestName = "Lexer.tokens.024")>]
-[<TestCase(24, TestName = "Lexer.tokens.025")>]
-[<TestCase(25, TestName = "Lexer.tokens.026")>]
-[<TestCase(26, TestName = "Lexer.tokens.027")>]
-[<TestCase(27, TestName = "Lexer.tokens.028")>]
-[<TestCase(28, TestName = "Lexer.tokens.029")>]
-[<TestCase(29, TestName = "Lexer.tokens.030")>]
-[<TestCase(30, TestName = "Lexer.tokens.031")>]
-[<TestCase(31, TestName = "Lexer.tokens.032")>]
-[<TestCase(32, TestName = "Lexer.tokens.033")>]
-[<TestCase(33, TestName = "Lexer.tokens.034")>]
-[<TestCase(34, TestName = "Lexer.tokens.035")>]
-[<TestCase(35, TestName = "Lexer.tokens.036")>]
-[<TestCase(36, TestName = "Lexer.tokens.037")>]
-[<TestCase(37, TestName = "Lexer.tokens.038")>]
-[<TestCase(38, TestName = "Lexer.tokens.039")>]
-[<TestCase(39, TestName = "Lexer.tokens.040")>]
-[<TestCase(40, TestName = "Lexer.tokens.041")>]
-[<TestCase(41, TestName = "Lexer.tokens.042")>]
-[<TestCase(42, TestName = "Lexer.tokens.043")>]
-[<TestCase(43, TestName = "Lexer.tokens.044")>]
-[<TestCase(44, TestName = "Lexer.tokens.045")>]
+[<TestCase(0, TestName = "PrefixLexer.tokens.01")>]
+[<TestCase(1, TestName = "PrefixLexer.tokens.02")>]
+[<TestCase(2, TestName = "PrefixLexer.tokens.03")>]
+[<TestCase(3, TestName = "PrefixLexer.tokens.04")>]
+[<TestCase(4, TestName = "PrefixLexer.tokens.05")>]
+[<TestCase(5, TestName = "PrefixLexer.tokens.06")>]
+[<TestCase(6, TestName = "PrefixLexer.tokens.07")>]
+[<TestCase(7, TestName = "PrefixLexer.tokens.08")>]
+[<TestCase(8, TestName = "PrefixLexer.tokens.09")>]
+[<TestCase(9, TestName = "PrefixLexer.tokens.010")>]
+[<TestCase(10, TestName = "PrefixLexer.tokens.011")>]
+[<TestCase(11, TestName = "PrefixLexer.tokens.012")>]
+[<TestCase(12, TestName = "PrefixLexer.tokens.013")>]
+[<TestCase(13, TestName = "PrefixLexer.tokens.014")>]
+[<TestCase(14, TestName = "PrefixLexer.tokens.015")>]
+[<TestCase(15, TestName = "PrefixLexer.tokens.016")>]
+[<TestCase(16, TestName = "PrefixLexer.tokens.017")>]
+[<TestCase(17, TestName = "PrefixLexer.tokens.018")>]
+[<TestCase(18, TestName = "PrefixLexer.tokens.019")>]
+[<TestCase(19, TestName = "PrefixLexer.tokens.020")>]
+[<TestCase(20, TestName = "PrefixLexer.tokens.021")>]
+[<TestCase(21, TestName = "PrefixLexer.tokens.022")>]
+[<TestCase(22, TestName = "PrefixLexer.tokens.023")>]
+[<TestCase(23, TestName = "PrefixLexer.tokens.024")>]
+[<TestCase(24, TestName = "PrefixLexer.tokens.025")>]
+[<TestCase(25, TestName = "PrefixLexer.tokens.026")>]
+[<TestCase(26, TestName = "PrefixLexer.tokens.027")>]
+[<TestCase(27, TestName = "PrefixLexer.tokens.028")>]
+[<TestCase(28, TestName = "PrefixLexer.tokens.029")>]
+[<TestCase(29, TestName = "PrefixLexer.tokens.030")>]
+[<TestCase(30, TestName = "PrefixLexer.tokens.031")>]
+[<TestCase(31, TestName = "PrefixLexer.tokens.032")>]
+[<TestCase(32, TestName = "PrefixLexer.tokens.033")>]
+[<TestCase(33, TestName = "PrefixLexer.tokens.034")>]
+[<TestCase(34, TestName = "PrefixLexer.tokens.035")>]
+[<TestCase(35, TestName = "PrefixLexer.tokens.036")>]
+[<TestCase(36, TestName = "PrefixLexer.tokens.037")>]
+[<TestCase(37, TestName = "PrefixLexer.tokens.038")>]
+[<TestCase(38, TestName = "PrefixLexer.tokens.039")>]
+[<TestCase(39, TestName = "PrefixLexer.tokens.040")>]
+[<TestCase(40, TestName = "PrefixLexer.tokens.041")>]
+[<TestCase(41, TestName = "PrefixLexer.tokens.042")>]
+[<TestCase(42, TestName = "PrefixLexer.tokens.043")>]
+[<TestCase(43, TestName = "PrefixLexer.tokens.044")>]
+[<TestCase(44, TestName = "PrefixLexer.tokens.045")>]
 let ``function tokens - type string`` idx =
     let (externalForm, _, _) = tokensStringTypeValues.[idx]
     let (_, internalForm, _) = tokensStringTypeValues.[idx]
@@ -2531,7 +2531,7 @@ let ``function tokens - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token list * string list = ArithmeticExpressionEvaluator.Lexer.tokens
+    let stringParser : string list -> token list * string list = ArithmeticExpressionEvaluator.PrefixLexer.tokens
     let (current, rest) = stringParser internalForm
 //    printfn "expected result: %A %A" currentResult restResult
 //    printfn "function result: %A %A" current rest
@@ -2540,24 +2540,24 @@ let ``function tokens - type string`` idx =
 
 //#endregion
 
-//#region "lex tests"
+//#region "prefixLex tests"
 
 // The first string is what humans expect to read
 // and the second string list is what the function reads.
 // Both are shown to make the test easier to comprehend.
-let private lexStringTypeValues : (string * string list * token list)[] = [|
+let private prefixLexStringTypeValues : (string * string list * token list)[] = [|
     (
         // idx 0
-        // Lexer.lex.01
+        // PrefixLexer.prefixLex.01
         // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
         // No input
         "",    // humans read this
-        [],    // the ArithmeticExpressionEvaluator.Lexer.lex function reads this
+        [],    // the ArithmeticExpressionEvaluator.PrefixLexer.lex function reads this
         []  // Notice no exception for empty list.
     );
     (
         // idx 1
-        // Lexer.lex.02
+        // PrefixLexer.prefixLex.02
         // One decimal digit
         "2",
         ["2"],
@@ -2565,7 +2565,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 2
-        // Lexer.lex.03
+        // PrefixLexer.prefixLex.03
         // One open paren
         "(",
         ["("],
@@ -2573,7 +2573,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 3
-        // Lexer.lex.04
+        // PrefixLexer.prefixLex.04
         // One close paren
         ")",
         [")"],
@@ -2581,7 +2581,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 4
-        // Lexer.lex.05
+        // PrefixLexer.prefixLex.05
         // ONe comma
         ",",
         [","],
@@ -2589,7 +2589,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 5
-        // Lexer.lex.06
+        // PrefixLexer.prefixLex.06
         // One operator
         "*",
         ["*"],
@@ -2597,7 +2597,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 6
-        // Lexer.lex.07
+        // PrefixLexer.prefixLex.07
         // One space
         " ",
         [" "],
@@ -2606,7 +2606,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 7
-        // Lexer.lex.08
+        // PrefixLexer.prefixLex.08
         // Two decimal digits
         "23",
         ["2";"3"],
@@ -2614,7 +2614,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 8
-        // Lexer.lex.09
+        // PrefixLexer.prefixLex.09
         // One decimal digit then one open paren
         "2(",
         ["2";"("],
@@ -2622,7 +2622,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 9
-        // Lexer.lex.010
+        // PrefixLexer.prefixLex.010
         // One decimal digit then one close paren
         "2)",
         ["2";")"],
@@ -2630,7 +2630,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 10
-        // Lexer.lex.011
+        // PrefixLexer.prefixLex.011
         // One decimal digit then one comma
         "2,",
         ["2";","],
@@ -2638,7 +2638,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 11
-        // Lexer.lex.012
+        // PrefixLexer.prefixLex.012
         // One decimal digit then one operator
         "2*",
         ["2";"*"],
@@ -2646,7 +2646,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 12
-        // Lexer.lex.013
+        // PrefixLexer.prefixLex.013
         // One decimal digit then one space
         "2 ",
         ["2";" "],
@@ -2655,7 +2655,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 13
-        // Lexer.lex.014
+        // PrefixLexer.prefixLex.014
         // One open paren then one decimal digit
         "(2",
         ["(";"2"],
@@ -2663,7 +2663,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 14
-        // Lexer.lex.015
+        // PrefixLexer.prefixLex.015
         // Two open parens
         "((",
         ["(";"("],
@@ -2671,7 +2671,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 15
-        // Lexer.lex.016
+        // PrefixLexer.prefixLex.016
         // One open paren then one close paren
         "()",
         ["(";")"],
@@ -2679,7 +2679,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 16
-        // Lexer.lex.017
+        // PrefixLexer.prefixLex.017
         // One open paren then one comma
         "(,",
         ["(";","],
@@ -2687,7 +2687,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 17
-        // Lexer.lex.018
+        // PrefixLexer.prefixLex.018
         // One open paren then one operator
         "(*",
         ["(";"*"],
@@ -2695,7 +2695,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 18
-        // Lexer.lex.019
+        // PrefixLexer.prefixLex.019
         // One open paren then one space
         "( ",
         ["(";" "],
@@ -2704,7 +2704,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 19
-        // Lexer.lex.020
+        // PrefixLexer.prefixLex.020
         // One close paren then one decimal digit
         ")2",
         [")";"2"],
@@ -2712,7 +2712,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 20
-        // Lexer.lex.021
+        // PrefixLexer.prefixLex.021
         // One close paren then one open paren
         ")(",
         [")";"("],
@@ -2720,7 +2720,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 21
-        // Lexer.lex.022
+        // PrefixLexer.prefixLex.022
         // Two close parens
         "))",
         [")";")"],
@@ -2728,7 +2728,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 22
-        // Lexer.lex.023
+        // PrefixLexer.prefixLex.023
         // One close paren then one comma
         "),",
         [")";","],
@@ -2736,7 +2736,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 23
-        // Lexer.lex.024
+        // PrefixLexer.prefixLex.024
         // One close paren then one operator
         ")*",
         [")";"*"],
@@ -2744,7 +2744,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 24
-        // Lexer.lex.025
+        // PrefixLexer.prefixLex.025
         // One close paren then one space
         ") ",
         [")";" "],
@@ -2753,7 +2753,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 25
-        // Lexer.lex.026
+        // PrefixLexer.prefixLex.026
         // One comma then one decimal digit
         ",2",
         [",";"2"],
@@ -2761,7 +2761,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 26
-        // Lexer.lex.027
+        // PrefixLexer.prefixLex.027
         // One comma then one comma
         ",(",
         [",";"("],
@@ -2769,7 +2769,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 27
-        // Lexer.lex.028
+        // PrefixLexer.prefixLex.028
         // One comma then one close paren
         ",)",
         [",";")"],
@@ -2777,7 +2777,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 28
-        // Lexer.lex.029
+        // PrefixLexer.prefixLex.029
         // Two commas
         ",,",
         [",";","],
@@ -2785,7 +2785,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 29
-        // Lexer.lex.030
+        // PrefixLexer.prefixLex.030
         // One comma then one operator
         ",*",
         [",";"*"],
@@ -2793,7 +2793,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 30
-        // Lexer.lex.031
+        // PrefixLexer.prefixLex.031
         // One comma then one space
         ", ",
         [",";" "],
@@ -2802,7 +2802,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 31
-        // Lexer.lex.032
+        // PrefixLexer.prefixLex.032
         // One operator then one decimal digit
         "*2",
         ["*";"2"],
@@ -2810,7 +2810,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 32
-        // Lexer.lex.033
+        // PrefixLexer.prefixLex.033
         // One operator then one operator
         "*(",
         ["*";"("],
@@ -2818,7 +2818,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 33
-        // Lexer.lex.034
+        // PrefixLexer.prefixLex.034
         // One operator then one close paren
         "*)",
         ["*";")"],
@@ -2826,7 +2826,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 34
-        // Lexer.lex.035
+        // PrefixLexer.prefixLex.035
         // One operator then one comma
         "*,",
         ["*";","],
@@ -2834,7 +2834,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 35
-        // Lexer.lex.036
+        // PrefixLexer.prefixLex.036
         // Two operators
         "**",
         ["*";"*"],
@@ -2842,7 +2842,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 36
-        // Lexer.lex.037
+        // PrefixLexer.prefixLex.037
         // One operator then one space
         "* ",
         ["*";" "],
@@ -2851,7 +2851,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
 
     (
         // idx 37
-        // Lexer.lex.038
+        // PrefixLexer.prefixLex.038
         // One whitespace then one decimal digit
         " 2",
         [" ";"2"],
@@ -2859,7 +2859,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 38
-        // Lexer.lex.039
+        // PrefixLexer.prefixLex.039
         // One whitespace then one operator
         " (",
         [" ";"("],
@@ -2867,7 +2867,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 39
-        // Lexer.lex.040
+        // PrefixLexer.prefixLex.040
         // One whitespace then one close paren
         " )",
         [" ";")"],
@@ -2875,7 +2875,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 40
-        // Lexer.lex.041
+        // PrefixLexer.prefixLex.041
         // One whitespace then one comma
         " ,",
         [" ";","],
@@ -2883,7 +2883,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 41
-        // Lexer.lex.042
+        // PrefixLexer.prefixLex.042
         // One whitespace then one operator
         " *",
         [" ";"*"],
@@ -2891,7 +2891,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 42
-        // Lexer.lex.043
+        // PrefixLexer.prefixLex.043
         // Two whitewhitespace
         "  ",
         [" ";" "],
@@ -2899,7 +2899,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 43
-        // Lexer.lex.044
+        // PrefixLexer.prefixLex.044
         // One alpha character
         // throws System.Exception "Unparsed input"
         "a",
@@ -2908,7 +2908,7 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     );
     (
         // idx 44
-        // Lexer.lex.045
+        // PrefixLexer.prefixLex.045
         // One alpha character
         "1 ",
         ["1"; " "],
@@ -2917,55 +2917,55 @@ let private lexStringTypeValues : (string * string list * token list)[] = [|
     |]
 
 [<Test>]
-[<TestCase(0, TestName = "Lexer.lex.01")>]
-[<TestCase(1, TestName = "Lexer.lex.02")>]
-[<TestCase(2, TestName = "Lexer.lex.03")>]
-[<TestCase(3, TestName = "Lexer.lex.04")>]
-[<TestCase(4, TestName = "Lexer.lex.05")>]
-[<TestCase(5, TestName = "Lexer.lex.06")>]
-[<TestCase(6, TestName = "Lexer.lex.07")>]
-[<TestCase(7, TestName = "Lexer.lex.08")>]
-[<TestCase(8, TestName = "Lexer.lex.09")>]
-[<TestCase(9, TestName = "Lexer.lex.010")>]
-[<TestCase(10, TestName = "Lexer.lex.011")>]
-[<TestCase(11, TestName = "Lexer.lex.012")>]
-[<TestCase(12, TestName = "Lexer.lex.013")>]
-[<TestCase(13, TestName = "Lexer.lex.014")>]
-[<TestCase(14, TestName = "Lexer.lex.015")>]
-[<TestCase(15, TestName = "Lexer.lex.016")>]
-[<TestCase(16, TestName = "Lexer.lex.017")>]
-[<TestCase(17, TestName = "Lexer.lex.018")>]
-[<TestCase(18, TestName = "Lexer.lex.019")>]
-[<TestCase(19, TestName = "Lexer.lex.020")>]
-[<TestCase(20, TestName = "Lexer.lex.021")>]
-[<TestCase(21, TestName = "Lexer.lex.022")>]
-[<TestCase(22, TestName = "Lexer.lex.023")>]
-[<TestCase(23, TestName = "Lexer.lex.024")>]
-[<TestCase(24, TestName = "Lexer.lex.025")>]
-[<TestCase(25, TestName = "Lexer.lex.026")>]
-[<TestCase(26, TestName = "Lexer.lex.027")>]
-[<TestCase(27, TestName = "Lexer.lex.028")>]
-[<TestCase(28, TestName = "Lexer.lex.029")>]
-[<TestCase(29, TestName = "Lexer.lex.030")>]
-[<TestCase(30, TestName = "Lexer.lex.031")>]
-[<TestCase(31, TestName = "Lexer.lex.032")>]
-[<TestCase(32, TestName = "Lexer.lex.033")>]
-[<TestCase(33, TestName = "Lexer.lex.034")>]
-[<TestCase(34, TestName = "Lexer.lex.035")>]
-[<TestCase(35, TestName = "Lexer.lex.036")>]
-[<TestCase(36, TestName = "Lexer.lex.037")>]
-[<TestCase(37, TestName = "Lexer.lex.038")>]
-[<TestCase(38, TestName = "Lexer.lex.039")>]
-[<TestCase(39, TestName = "Lexer.lex.040")>]
-[<TestCase(40, TestName = "Lexer.lex.041")>]
-[<TestCase(41, TestName = "Lexer.lex.042")>]
-[<TestCase(42, TestName = "Lexer.lex.043")>]
-[<TestCase(43, TestName = "Lexer.lex.044", ExpectedException=typeof<System.Exception>, ExpectedMessage = "Unparsed input")>]
-[<TestCase(44, TestName = "Lexer.lex.045")>]
+[<TestCase(0, TestName = "PrefixLexer.prefixLex.01")>]
+[<TestCase(1, TestName = "PrefixLexer.prefixLex.02")>]
+[<TestCase(2, TestName = "PrefixLexer.prefixLex.03")>]
+[<TestCase(3, TestName = "PrefixLexer.prefixLex.04")>]
+[<TestCase(4, TestName = "PrefixLexer.prefixLex.05")>]
+[<TestCase(5, TestName = "PrefixLexer.prefixLex.06")>]
+[<TestCase(6, TestName = "PrefixLexer.prefixLex.07")>]
+[<TestCase(7, TestName = "PrefixLexer.prefixLex.08")>]
+[<TestCase(8, TestName = "PrefixLexer.prefixLex.09")>]
+[<TestCase(9, TestName = "PrefixLexer.prefixLex.010")>]
+[<TestCase(10, TestName = "PrefixLexer.prefixLex.011")>]
+[<TestCase(11, TestName = "PrefixLexer.prefixLex.012")>]
+[<TestCase(12, TestName = "PrefixLexer.prefixLex.013")>]
+[<TestCase(13, TestName = "PrefixLexer.prefixLex.014")>]
+[<TestCase(14, TestName = "PrefixLexer.prefixLex.015")>]
+[<TestCase(15, TestName = "PrefixLexer.prefixLex.016")>]
+[<TestCase(16, TestName = "PrefixLexer.prefixLex.017")>]
+[<TestCase(17, TestName = "PrefixLexer.prefixLex.018")>]
+[<TestCase(18, TestName = "PrefixLexer.prefixLex.019")>]
+[<TestCase(19, TestName = "PrefixLexer.prefixLex.020")>]
+[<TestCase(20, TestName = "PrefixLexer.prefixLex.021")>]
+[<TestCase(21, TestName = "PrefixLexer.prefixLex.022")>]
+[<TestCase(22, TestName = "PrefixLexer.prefixLex.023")>]
+[<TestCase(23, TestName = "PrefixLexer.prefixLex.024")>]
+[<TestCase(24, TestName = "PrefixLexer.prefixLex.025")>]
+[<TestCase(25, TestName = "PrefixLexer.prefixLex.026")>]
+[<TestCase(26, TestName = "PrefixLexer.prefixLex.027")>]
+[<TestCase(27, TestName = "PrefixLexer.prefixLex.028")>]
+[<TestCase(28, TestName = "PrefixLexer.prefixLex.029")>]
+[<TestCase(29, TestName = "PrefixLexer.prefixLex.030")>]
+[<TestCase(30, TestName = "PrefixLexer.prefixLex.031")>]
+[<TestCase(31, TestName = "PrefixLexer.prefixLex.032")>]
+[<TestCase(32, TestName = "PrefixLexer.prefixLex.033")>]
+[<TestCase(33, TestName = "PrefixLexer.prefixLex.034")>]
+[<TestCase(34, TestName = "PrefixLexer.prefixLex.035")>]
+[<TestCase(35, TestName = "PrefixLexer.prefixLex.036")>]
+[<TestCase(36, TestName = "PrefixLexer.prefixLex.037")>]
+[<TestCase(37, TestName = "PrefixLexer.prefixLex.038")>]
+[<TestCase(38, TestName = "PrefixLexer.prefixLex.039")>]
+[<TestCase(39, TestName = "PrefixLexer.prefixLex.040")>]
+[<TestCase(40, TestName = "PrefixLexer.prefixLex.041")>]
+[<TestCase(41, TestName = "PrefixLexer.prefixLex.042")>]
+[<TestCase(42, TestName = "PrefixLexer.prefixLex.043")>]
+[<TestCase(43, TestName = "PrefixLexer.prefixLex.044", ExpectedException=typeof<System.Exception>, ExpectedMessage = "Unparsed input")>]
+[<TestCase(44, TestName = "PrefixLexer.prefixLex.045")>]
 let ``function lex - type string`` idx =
-    let (externalForm, _, _) = lexStringTypeValues.[idx]
-    let (_, internalForm, _) = lexStringTypeValues.[idx]
-    let (_, _, currentResult) = lexStringTypeValues.[idx]
+    let (externalForm, _, _) = prefixLexStringTypeValues.[idx]
+    let (_, internalForm, _) = prefixLexStringTypeValues.[idx]
+    let (_, _, currentResult) = prefixLexStringTypeValues.[idx]
 
     // Verify function input form and human form match.
     let convertedForm = ArithmeticExpressionEvaluator.Lib.explode externalForm
@@ -2975,7 +2975,7 @@ let ``function lex - type string`` idx =
     Assert.AreEqual(convertedForm, internalForm)
 
     // Verify result of function
-    let stringParser : string list -> token list = ArithmeticExpressionEvaluator.Lexer.lex
+    let stringParser : string list -> token list = ArithmeticExpressionEvaluator.PrefixLexer.prefixLex
     let current = stringParser internalForm
 //    printfn "expected result: %A" currentResult
 //    printfn "function result: %A" current

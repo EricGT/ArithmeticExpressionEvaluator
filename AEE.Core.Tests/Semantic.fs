@@ -76,7 +76,6 @@ let ``function eval`` idx =
     let (_, result) = evalValues.[idx]
 
 //    printfn "expr: %A" expr
- 
     let functionResult = eval expr
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult

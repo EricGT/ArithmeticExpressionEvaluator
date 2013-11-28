@@ -24,7 +24,7 @@ module ArithmeticExpressionEvaluator.ParserCombinator.Tests
 //#region opens
 
 open ArithmeticExpressionEvaluator.ParserCombinator
-open ArithmeticExpressionEvaluator.Lexer              // Needed for type token
+open ArithmeticExpressionEvaluator.PrefixLexer              // Needed for type token
 
 open NUnit.Framework
 
@@ -49,25 +49,25 @@ let isTokenInteger x =
 // Create a parser that accepts only decimal digit string values.
 let digitStringParser (l : string list) : string * string list =
     match l with
-    | h::t when ArithmeticExpressionEvaluator.Lexer.isdecimaldigit h -> (h,t)
+    | h::t when ArithmeticExpressionEvaluator.PrefixLexer.isdecimaldigit h -> (h,t)
     | _ -> raise Noparse
 
 // Create a parser that accepts only operator string values.
 let symbolStringParser (l : string list) : string * string list =
     match l with
-    | h::t when ArithmeticExpressionEvaluator.Lexer.isoperator h -> (h,t)
+    | h::t when ArithmeticExpressionEvaluator.PrefixLexer.isoperator h -> (h,t)
     | _ -> raise Noparse
 
 // Create a parser that accepts only Integer token values.
 let intTokenParser (l : token list) : token * token list =
     match l with
-    | Integer h::t when ArithmeticExpressionEvaluator.Lexer.isdecimaldigit h -> (Integer h,t)
+    | Integer h::t when ArithmeticExpressionEvaluator.PrefixLexer.isdecimaldigit h -> (Integer h,t)
     | _ -> raise Noparse
 
 // Create a parser that accepts only Operator token values.
 let operatorTokenParser (l : token list) : token * token list =
     match l with
-    | Operator h::t when ArithmeticExpressionEvaluator.Lexer.isoperator h -> (Operator h,t)
+    | Operator h::t when ArithmeticExpressionEvaluator.PrefixLexer.isoperator h -> (Operator h,t)
     | _ -> raise Noparse
 
 //#endregion
@@ -313,7 +313,7 @@ let ``function some - type token`` idx =
     let (_, _, (currentResult , restResult)) = someTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -570,7 +570,7 @@ let ``function a - type token`` idx =
     let (_, _, (currentResult , restResult)) = aTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -826,7 +826,7 @@ let ``function alternative - type token`` idx =
     let (_, _, (currentResult , restResult)) = alternativeTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -1070,7 +1070,7 @@ let ``function sequential - type token`` idx =
     let (_, _, (currentResult , restResult)) = sequentialTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -1318,7 +1318,7 @@ let ``function many - type token`` idx =
     let (_, _, (currentResult , restResult)) = manyTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -1575,7 +1575,7 @@ let ``function atleast - type token`` idx =
     let (_, _, (currentResult , restResult)) = atleastTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm
@@ -1672,7 +1672,7 @@ let ``function finished - type token`` idx =
     let (_, _, (currentResult , restResult)) = finishedTokenTypeValues.[idx]
 
     // Verify function input form and human form match.
-    let convertedForm = (ArithmeticExpressionEvaluator.Lexer.lex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
 //    printfn "external form: %A" externalForm
 //    printfn "internal form: %A" internalForm
 //    printfn "converted form: %A" convertedForm

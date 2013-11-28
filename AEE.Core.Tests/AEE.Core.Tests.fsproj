@@ -38,9 +38,11 @@
     <Compile Include="Lib.fs" />
     <Compile Include="Semantic.fs" />
     <Compile Include="ParserCombinator.fs" />
-    <Compile Include="Lexer.fs" />
+    <Compile Include="PrefixLexer.fs" />
     <Compile Include="Prefix.fs" />
-    <Compile Include="Infix.fs" />
+    <Compile Include="InfixFactoredGrammar.fs" />
+    <Compile Include="ShuntingYard.fs" />
+    <Compile Include="PrecedenceClimbing.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

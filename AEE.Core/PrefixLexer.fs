@@ -31,7 +31,7 @@
 
 //#endregion
 
-module ArithmeticExpressionEvaluator.Lexer
+module ArithmeticExpressionEvaluator.PrefixLexer
 
 open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.ParserCombinator
@@ -66,10 +66,10 @@ let iswhitespace,isparen,isoperator,isdecimaldigit =
 
 //#endregion
 
-//#region Lexer
+//#region Prefix Lexer
 
 (* ------------------------------------------------------------------------- *)
-(* Lexer.                                                                    *)
+(* Prefix Lexer.                                                              *)
 (* ------------------------------------------------------------------------- *)
 
 type token = 
@@ -125,7 +125,7 @@ let rec tokens sl =
     | Noparse -> [],sl
 
 //lex (sl : string list) : token list
-let lex sl =
+let prefixLex sl =
     // ending (prs : 'a -> 'b * string list) : 'a -> 'b
     let ending prs =
         fst << ((prs .>>. many(some iswhitespace) .>>. finished) |>> (fst << fst))
