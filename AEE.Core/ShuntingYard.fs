@@ -28,7 +28,7 @@ open ArithmeticExpressionEvaluator.PrefixLexer
 
 //#region Infix Lexer
 
-type token = 
+type token =
     | Integer of string
     | Operator of string
     | OpenParen
@@ -51,7 +51,7 @@ let closeParen = a ")" |>> (fun x -> CloseParen)
 let operator = some isoperator |>> (fun x -> Operator x)
 
 // rawtoken : string list -> token * string list
-let rawtoken =  
+let rawtoken =
     integer <|>
     openParen <|>
     closeParen <|>
@@ -62,7 +62,7 @@ let spacedtoken = many (some iswhitespace) .>>. rawtoken |>> snd
 
 // tokens (sl : string list) : token list * string list
 let rec tokens sl =
-    try 
+    try
         // get token from head of list
         let (t,rst) = spacedtoken sl
         // get tokens from tail of list
@@ -71,7 +71,7 @@ let rec tokens sl =
         let (tokenlist,rest) = t::toks,rst1
         // return token list and remaining input characters as a tuple
         tokenlist,rest
-    with 
+    with
     | Noparse -> [],sl
 
 //infixLex (sl : string list) : token list
@@ -88,6 +88,18 @@ precedence.Add("+",2)
 precedence.Add("-",2)
 precedence.Add("*",3)
 precedence.Add("/",3)
+precedence.Add("^",4)
+
+type assoc =
+    | Right
+    | Left
+
+let associtivity = System.Collections.Generic.Dictionary<string,assoc>()
+associtivity.Add("+",Left)
+associtivity.Add("-",Left)
+associtivity.Add("*",Left)
+associtivity.Add("/",Left)
+associtivity.Add("^",Right)
 
 //#region Shunting Yard Algorithm
 
@@ -96,17 +108,17 @@ precedence.Add("/",3)
 let ShuntingYard (l : token list) : token list =
     let rec read tokens (oq : token list) (s : token list) =
         match tokens with
-        | (Integer v)::tokensTail -> 
+        | (Integer v)::tokensTail ->
             let oq = (Integer v)::oq
             read tokensTail oq s
-        | (Operator o1)::tokensTail -> 
+        | (Operator o1)::tokensTail ->
             let rec processStack (oq : token list) (s : token list) =
                 match s with
-                | o2t::stackTail -> 
+                | o2t::stackTail ->
                     match o2t with
                     | Operator o2 ->
-                        if (precedence.Item(o1) <= precedence.Item(o2)) 
-                        then 
+                        if (precedence.Item(o1) <= precedence.Item(o2))
+                        then
                             let oq = o2t::oq
                             processStack oq stackTail
                     | _ -> ()
@@ -114,7 +126,7 @@ let ShuntingYard (l : token list) : token list =
             processStack oq s
             let s = (Operator o1)::s
             read tokensTail oq s
-        | OpenParen::tokensTail -> 
+        | OpenParen::tokensTail ->
             let s = OpenParen::s
             read tokensTail oq s
         | CloseParen::tokensTail ->
@@ -151,7 +163,7 @@ let ShuntingYard (l : token list) : token list =
 let postfixEval (l : token list) : int =
     let rec processExpression (l : token list) (s : int list) =
         match l with
-        | Integer x::tokensTail -> 
+        | Integer x::tokensTail ->
             let value = System.Int32.Parse(x)
             let s = value::s
             processExpression tokensTail s
@@ -164,13 +176,14 @@ let postfixEval (l : token list) : int =
                     | "-" -> l - r
                     | "*" -> l * r
                     | "/" -> l / r
+                    | "^" -> pown l r
                     | _ -> raise Noparse
                 let s = value::stackTail
                 processExpression tokensTail s
             | _ -> raise Noparse
         | [] ->
             List.head s
-        | _ -> 
+        | _ ->
             raise Noparse
     processExpression l []
 
@@ -183,17 +196,17 @@ let postfixEval (l : token list) : int =
 let ShuntingYardAst (l : token list) : expr =
     let rec read tokens (s : token list) (es : expr list) : expr =
         match tokens with
-        | (Integer v)::tokensTail -> 
+        | (Integer v)::tokensTail ->
             let es = Int (System.Int32.Parse(v))::es
             read tokensTail s es
-        | (Operator o1)::tokensTail -> 
+        | (Operator o1)::tokensTail ->
             let rec processStack (s : token list) (es : expr list) =
                 match s with
-                | o2t::stackTail -> 
+                | o2t::stackTail ->
                     match o2t with
                     | Operator o2 ->
-                        if (precedence.Item(o1) <= precedence.Item(o2)) 
-                        then 
+                        if (precedence.Item(o1) <= precedence.Item(o2))
+                        then
                             let es =
                                 match es with
                                 | r::l::tail ->
@@ -202,6 +215,7 @@ let ShuntingYardAst (l : token list) : expr =
                                     | "-" -> [Difference(l,r)]
                                     | "*" -> [Product(l,r)]
                                     | "/" -> [Quotient(l,r)]
+                                    | "^" -> [Power(l,r)]
                                     | _ -> raise Noparse
                                 | _ -> raise Noparse
                             processStack stackTail es
@@ -210,7 +224,7 @@ let ShuntingYardAst (l : token list) : expr =
             processStack s es
             let s = (Operator o1)::s
             read tokensTail s es
-        | OpenParen::tokensTail -> 
+        | OpenParen::tokensTail ->
             let s = OpenParen::s
             read tokensTail s es
         | CloseParen::tokensTail ->
@@ -224,17 +238,20 @@ let ShuntingYardAst (l : token list) : expr =
                     match es with
                     | r::l::tail ->
                         match x with
-                        | "+" -> 
+                        | "+" ->
                             let es = (Sum(l,r)::tail)
                             processStack stackTail es
-                        | "-" -> 
+                        | "-" ->
                             let es = (Difference(l,r)::tail)
                             processStack stackTail es
-                        | "*" -> 
+                        | "*" ->
                             let es = (Product(l,r)::tail)
                             processStack stackTail es
-                        | "/" -> 
+                        | "/" ->
                             let es = (Quotient(l,r)::tail)
+                            processStack stackTail es
+                        | "^" ->
+                            let es = (Power(l,r)::tail)
                             processStack stackTail es
                         | _ -> raise Noparse
                     | [] -> List.head es
@@ -251,17 +268,20 @@ let ShuntingYardAst (l : token list) : expr =
                     match es with
                     | r::l::tail ->
                         match x with
-                        | "+" -> 
+                        | "+" ->
                             let es = (Sum(l,r)::tail)
                             processStack stackTail es
-                        | "-" -> 
+                        | "-" ->
                             let es = (Difference(l,r)::tail)
                             processStack stackTail es
-                        | "*" -> 
+                        | "*" ->
                             let es = (Product(l,r)::tail)
                             processStack stackTail es
-                        | "/" -> 
+                        | "/" ->
                             let es = (Quotient(l,r)::tail)
+                            processStack stackTail es
+                        | "^" ->
+                            let es = (Power(l,r)::tail)
                             processStack stackTail es
                         | _ -> raise Noparse
                     | _ -> raise Noparse

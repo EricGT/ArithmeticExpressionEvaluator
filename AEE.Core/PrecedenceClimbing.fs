@@ -35,20 +35,27 @@ let precedenceClimbing (tokens : token list) : expr =
         let (lhs,rest) = parser tokens
         match rest with
         | [] -> (lhs, rest)
-        | _ -> 
+        | _ ->
             let rec makeExpr tokens minPrec lhs : (expr * token list) =
                 match tokens with
                 | Operator Op::tokensTail ->
                     let prec = precedence.Item(Op)
                     match prec >= minPrec with
                     | true ->
-                        let (rhs, tokensTail) = expression tokensTail (prec + 1)
+                        let prec1 Op =
+                            let prec = precedence.Item(Op)
+                            let assoc = associtivity.Item(Op)
+                            match assoc with
+                            | Left -> prec + 1
+                            | Right -> prec
+                        let (rhs, tokensTail) = expression tokensTail (prec1 Op)
                         let branch =
                             match Op with
                             | "+" -> Sum(lhs, rhs)
                             | "-" -> Difference(lhs, rhs)
                             | "*" -> Product(lhs, rhs)
                             | "/" -> Quotient(lhs, rhs)
+                            | "^" -> Power(lhs, rhs)
                             | _ -> raise Noparse
                         makeExpr tokensTail minPrec branch
                     | false -> (lhs, tokens)
@@ -71,4 +78,4 @@ let precedenceClimbing (tokens : token list) : expr =
     expr
 
 //#endregion
-        
+

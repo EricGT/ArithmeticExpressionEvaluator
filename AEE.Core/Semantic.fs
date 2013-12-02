@@ -27,6 +27,7 @@ type expr =
     | Product of expr * expr
     | Difference of expr * expr
     | Quotient of expr * expr
+    | Power of expr * expr
 
 let rec eval (e : expr) =
     match e with
@@ -35,3 +36,4 @@ let rec eval (e : expr) =
     | Product (a,b) -> (eval a) * (eval b)
     | Difference (a,b) -> (eval a) - (eval b)
     | Quotient (a,b) -> (eval a) / (eval b)
+    | Power (a,b) -> pown (eval a) (eval b)

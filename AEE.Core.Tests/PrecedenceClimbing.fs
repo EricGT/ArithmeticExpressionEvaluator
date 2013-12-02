@@ -35,7 +35,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 0
         // PrecedenceClimbing.precedenceClimbing.01
-        // 1+2
         "1+2",
         ["1"; "+"; "2"],
         [Integer "1"; Operator "+"; Integer "2"],
@@ -47,7 +46,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 1
         // PrecedenceClimbing.precedenceClimbing.02
-        // 2*3
         "2*3",
         ["2"; "*"; "3"],
         [Integer "2"; Operator "*"; Integer "3"],
@@ -59,7 +57,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 2
         // PrecedenceClimbing.precedenceClimbing.03
-        // 3-1
         "3-1",
         ["3"; "-"; "1"],
         [Integer "3"; Operator "-"; Integer "1"],
@@ -71,7 +68,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 3
         // PrecedenceClimbing.precedenceClimbing.04
-        // 4/2
         "4/2",
         ["4"; "/"; "2"],
         [Integer "4"; Operator "/"; Integer "2"],
@@ -83,7 +79,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 4
         // PrecedenceClimbing.precedenceClimbing.05
-        // (1+2)+3
         "(1+2)+3",
         ["("; "1"; "+"; "2"; ")"; "+"; "3"],
         [OpenParen; Integer "1"; Operator "+"; Integer "2"; CloseParen; Operator "+"; Integer "3"],
@@ -95,7 +90,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 5
         // PrecedenceClimbing.precedenceClimbing.06
-        // 1+(2+3)
         "1+(2+3)",
         ["1"; "+"; "("; "2"; "+"; "3"; ")"],
         [Integer "1"; Operator "+"; OpenParen; Integer "2"; Operator "+"; Integer "3"; CloseParen],
@@ -107,7 +101,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 6
         // PrecedenceClimbing.precedenceClimbing.07
-        // (2*3)*4
         "(2*3)*4",
         ["("; "2"; "*"; "3"; ")"; "*"; "4"],
         [OpenParen; Integer "2"; Operator "*"; Integer "3"; CloseParen; Operator "*"; Integer "4"],
@@ -119,7 +112,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 7
         // PrecedenceClimbing.precedenceClimbing.08
-        // 2*(3*4)
         "2*(3*4)",
         ["2"; "*"; "("; "3"; "*"; "4"; ")"],
         [Integer "2"; Operator "*"; OpenParen; Integer "3"; Operator "*"; Integer "4"; CloseParen],
@@ -131,7 +123,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 8
         // PrecedenceClimbing.precedenceClimbing.09
-        // (5-2)-1
         "(5-2)-1",
         ["("; "5"; "-"; "2"; ")"; "-"; "1"],
         [OpenParen; Integer "5"; Operator "-"; Integer "2"; CloseParen; Operator "-"; Integer "1"],
@@ -143,7 +134,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 9
         // PrecedenceClimbing.precedenceClimbing.010
-        // 5-(2-1)
         "5-(2-1)",
         ["5"; "-"; "("; "2"; "-"; "1"; ")"],
         [Integer "5"; Operator "-"; OpenParen; Integer "2"; Operator "-"; Integer "1"; CloseParen],
@@ -155,7 +145,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 10
         // PrecedenceClimbing.precedenceClimbing.011
-        // (24/4)/2
         "(24/4)/2",
         ["("; "2"; "4"; "/"; "4"; ")"; "/"; "2"],
         [OpenParen; Integer "24"; Operator "/"; Integer "4"; CloseParen; Operator "/"; Integer "2"],
@@ -167,7 +156,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 11
         // PrecedenceClimbing.precedenceClimbing.012
-        // 24/(4/2)
         "24/(4/2)",
         ["2"; "4"; "/"; "("; "4"; "/"; "2"; ")"],
         [Integer "24"; Operator "/"; OpenParen; Integer "4"; Operator "/"; Integer "2"; CloseParen],
@@ -179,7 +167,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 12
         // PrecedenceClimbing.precedenceClimbing.013
-        // (2*3)+4
         "(2*3)+4",
         ["("; "2"; "*"; "3"; ")"; "+"; "4"],
         [OpenParen; Integer "2"; Operator "*"; Integer "3"; CloseParen; Operator "+"; Integer "4"],
@@ -191,7 +178,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 13
         // PrecedenceClimbing.precedenceClimbing.014
-        // 2*(3+4)
         "2*(3+4)",
         ["2"; "*"; "("; "3"; "+"; "4"; ")"],
         [Integer "2"; Operator "*"; OpenParen; Integer "3"; Operator "+"; Integer "4"; CloseParen],
@@ -203,7 +189,6 @@ let private precedenceClimbingValues : (string * string list * token list * toke
     (
         // idx 14
         // PrecedenceClimbing.precedenceClimbing.015
-        // (51-(2+3)*(4+5))/2
         "(51-(2+3)*(4+5))/2",
         ["("; "5"; "1"; "-"; "("; "2"; "+"; "3"; ")"; "*"; "("; "4"; "+"; "5"; ")"; ")"; "/"; "2"],
         [OpenParen; Integer "51"; Operator "-"; OpenParen; Integer "2"; Operator "+";
@@ -213,6 +198,97 @@ let private precedenceClimbingValues : (string * string list * token list * toke
         [Integer "51"; Integer "2"; Integer "3"; Operator "+"; Integer "4"; Integer "5"; Operator "+"; Operator "*"; Operator "-"; Integer "2"; Operator "/"],
         Quotient (Difference (Int 51,Product (Sum (Int 2,Int 3),Sum (Int 4,Int 5))),Int 2),
         3
+    );
+    (
+        // idx 15
+        // PrecedenceClimbing.precedenceClimbing.16
+        "1+2+3",
+        ["1"; "+"; "2"; "+"; "3"],
+        [Integer "1"; Operator "+"; Integer "2"; Operator "+"; Integer "3"],
+        [Integer "1"; Operator "+"; Integer "2"; Operator "+"; Integer "3"],
+        [Integer "1"; Operator "+"; Integer "2"; Operator "+"; Integer "3"],
+        Sum (Sum (Int 1,Int 2),Int 3),
+        6
+    );
+    (
+        // idx 16
+        // PrecedenceClimbing.precedenceClimbing.17
+        "5-2-1",
+        ["5"; "-"; "2"; "-"; "1"],
+        [Integer "5"; Operator "-"; Integer "2"; Operator "-"; Integer "1"],
+        [Integer "5"; Operator "-"; Integer "2"; Operator "-"; Integer "1"],
+        [Integer "5"; Operator "-"; Integer "2"; Operator "-"; Integer "1"],
+        Difference (Difference (Int 5,Int 2),Int 1),
+        2
+    );
+    (
+        // idx 17
+        // PrecedenceClimbing.precedenceClimbing.18
+        "2^2",
+        ["2"; "^"; "2"],
+        [Integer "2"; Operator "^"; Integer "2"],
+        [Integer "2"; Operator "^"; Integer "2"],
+        [Integer "2"; Operator "^"; Integer "2"],
+        Power (Int 2,Int 2),
+        4
+    );
+    (
+        // idx 18
+        // PrecedenceClimbing.precedenceClimbing.19
+        "(2^3)^2",
+        // (2^3)^2 = 8^2 = 64
+        ["("; "2"; "^"; "3"; ")"; "^"; "2"],
+        [OpenParen; Integer "2"; Operator "^"; Integer "3"; CloseParen; Operator "^"; Integer "2"],
+        [OpenParen; Integer "2"; Operator "^"; Integer "3"; CloseParen; Operator "^"; Integer "2"],
+        [OpenParen; Integer "2"; Operator "^"; Integer "3"; CloseParen; Operator "^"; Integer "2"],
+        Power (Power (Int 2,Int 3),Int 2),
+        64
+    );
+    (
+        // idx 19
+        // PrecedenceClimbing.precedenceClimbing.20
+        "2^(3^2)",
+        // 2^(3^2) = 2^9 = 512
+        ["2"; "^"; "("; "3"; "^"; "2"; ")"],
+        [Integer "2"; Operator "^"; OpenParen; Integer "3"; Operator "^"; Integer "2"; CloseParen],
+        [Integer "2"; Operator "^"; OpenParen; Integer "3"; Operator "^"; Integer "2"; CloseParen],
+        [Integer "2"; Operator "^"; OpenParen; Integer "3"; Operator "^"; Integer "2"; CloseParen],
+        Power(Int 2, Power (Int 3,Int 2)),
+        512
+    );
+    (
+        // idx 20
+        // PrecedenceClimbing.precedenceClimbing.21
+        "2^3^2",
+        // 2^(3^2) = 2^9 = 512
+        ["2"; "^"; "3"; "^"; "2"],
+        [Integer "2"; Operator "^"; Integer "3"; Operator "^"; Integer "2"],
+        [Integer "2"; Operator "^"; Integer "3"; Operator "^"; Integer "2"],
+        [Integer "2"; Operator "^"; Integer "3"; Operator "^"; Integer "2"],
+        Power(Int 2, Power (Int 3,Int 2)),
+        512
+    );
+    (
+        // idx 21
+        // PrecedenceClimbing.precedenceClimbing.020
+        "24/4/2",
+        ["2"; "4"; "/"; "4"; "/"; "2"],
+        [Integer "24"; Operator "/"; Integer "4"; Operator "/"; Integer "2"],
+        [Integer "24"; Integer "4"; Integer "2"; Operator "/"; Operator "/"],
+        [Integer "24"; Integer "4"; Integer "2"; Operator "/"; Operator "/"],
+        Quotient (Quotient (Int 24,Int 4), Int 2),
+        3
+    );
+    (
+        // idx 22
+        // PrecedenceClimbing.precedenceClimbing.023
+        "2*3*4",
+        ["2"; "*";  "3"; "*"; "4"],
+        [Integer "2"; Operator "*"; Integer "3"; Operator "*"; Integer "4"],
+        [Integer "2"; Integer "3"; Integer "4"; Operator "*"; Operator "*"],
+        [Integer "2"; Integer "3"; Integer "4"; Operator "*"; Operator "*"],
+        Product (Product (Int 2, Int 3), Int 4),
+        24
     );
     |]
 [<Test>]
@@ -231,6 +307,14 @@ let private precedenceClimbingValues : (string * string list * token list * toke
 [<TestCase(12, TestName = "PrecedenceClimbing.precedenceClimbing.013")>]
 [<TestCase(13, TestName = "PrecedenceClimbing.precedenceClimbing.014")>]
 [<TestCase(14, TestName = "PrecedenceClimbing.precedenceClimbing.015")>]
+[<TestCase(15, TestName = "PrecedenceClimbing.precedenceClimbing.016")>]
+[<TestCase(16, TestName = "PrecedenceClimbing.precedenceClimbing.017")>]
+[<TestCase(17, TestName = "PrecedenceClimbing.precedenceClimbing.018")>]
+[<TestCase(18, TestName = "PrecedenceClimbing.precedenceClimbing.019")>]
+[<TestCase(19, TestName = "PrecedenceClimbing.precedenceClimbing.020")>]
+[<TestCase(20, TestName = "PrecedenceClimbing.precedenceClimbing.021")>]
+[<TestCase(21, TestName = "PrecedenceClimbing.precedenceClimbing.022")>]
+[<TestCase(22, TestName = "PrecedenceClimbing.precedenceClimbing.023")>]
 
 let ``function Infix.parser`` idx =
     let (externalForm, _, _, _, _, _, _) = precedenceClimbingValues.[idx]
@@ -258,7 +342,7 @@ let ``function Infix.parser`` idx =
 
     // Verify result of Precedence Climbing
     let precedenceClimbingAstResult = ArithmeticExpressionEvaluator.PrecedenceClimbing.precedenceClimbing lexResult
-//    printfn "postfixTokenList: %A" postfixTokenList
+//    printfn "expr: %A" expr
 //    printfn "Precedence Climbing result: %A" precedenceClimbingAstResult
     Assert.AreEqual (precedenceClimbingAstResult, expr)
 //    printfn "passed Precedence Climbing step"

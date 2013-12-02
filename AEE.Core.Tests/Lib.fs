@@ -116,8 +116,8 @@ let private explodeLimitValues : (int)[] = [|
         int(System.Int32.MaxValue)
     );
     |]
-    
-// Note: If using code coverage tools, the code coverage tools may not 
+
+// Note: If using code coverage tools, the code coverage tools may not
 // understand NUnit Category attribute.
 // Note: The System.Int32.MaxValue test is commented out because it is long running.
 [<Test>]

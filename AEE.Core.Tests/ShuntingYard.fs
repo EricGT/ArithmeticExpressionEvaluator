@@ -30,7 +30,7 @@ open NUnit.Framework
 
 //#region "shuntingYard tests"
 
-let private shuntingYardValues : (string * string list * token list * token list * token list * expr * int)[] = [|
+let private shuntingYardValues : (string * string list * token list * token list * expr * int)[] = [|
     (
         // idx 0
         // ShuntingYard.shuntingyard.01
@@ -39,7 +39,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["1"; "+"; "2"],
         [Integer "1"; Operator "+"; Integer "2"],
         [Integer "1"; Integer "2"; Operator "+"],
-        [Operator "+"; Integer "1"; Integer "2"],
         Sum(Int 1,Int 2),
         3
     );
@@ -51,7 +50,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["2"; "*"; "3"],
         [Integer "2"; Operator "*"; Integer "3"],
         [Integer "2"; Integer "3"; Operator "*"],
-        [Operator "*"; Integer "2"; Integer "3"],
         Product(Int 2,Int 3),
         6
     );
@@ -63,7 +61,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["3"; "-"; "1"],
         [Integer "3"; Operator "-"; Integer "1"],
         [Integer "3"; Integer "1"; Operator "-"],
-        [Operator "-"; Integer "3"; Integer "1"],
         Difference(Int 3,Int 1),
         2
     );
@@ -75,7 +72,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["4"; "/"; "2"],
         [Integer "4"; Operator "/"; Integer "2"],
         [Integer "4"; Integer "2"; Operator "/"],
-        [Operator "/"; Integer "4"; Integer "2"],
         Quotient(Int 4,Int 2),
         2
     );
@@ -87,7 +83,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["("; "1"; "+"; "2"; ")"; "+"; "3"],
         [OpenParen; Integer "1"; Operator "+"; Integer "2"; CloseParen; Operator "+"; Integer "3"],
         [Integer "1"; Integer "2"; Operator "+"; Integer "3"; Operator "+"],
-        [Operator "+"; Operator "+"; Integer "1"; Integer "2"; Integer "3"],
         Sum (Sum (Int 1,Int 2),Int 3),
         6
     );
@@ -99,7 +94,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["1"; "+"; "("; "2"; "+"; "3"; ")"],
         [Integer "1"; Operator "+"; OpenParen; Integer "2"; Operator "+"; Integer "3"; CloseParen],
         [Integer "1"; Integer "2"; Integer "3"; Operator "+"; Operator "+"],
-        [Operator "+"; Integer "2"; Integer "3"; Operator "+"; Integer "1"],
         Sum (Int 1,Sum (Int 2,Int 3)),
         6
     );
@@ -110,7 +104,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         "(2*3)*4",
         ["("; "2"; "*"; "3"; ")"; "*"; "4"],
         [OpenParen; Integer "2"; Operator "*"; Integer "3"; CloseParen; Operator "*"; Integer "4"],
-        [Integer "2"; Integer "3"; Operator "*"; Integer "4"; Operator "*"],
         [Integer "2"; Integer "3"; Operator "*"; Integer "4"; Operator "*"],
         Product (Product (Int 2,Int 3),Int 4),
         24
@@ -123,7 +116,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["2"; "*"; "("; "3"; "*"; "4"; ")"],
         [Integer "2"; Operator "*"; OpenParen; Integer "3"; Operator "*"; Integer "4"; CloseParen],
         [Integer "2"; Integer "3"; Integer "4"; Operator "*"; Operator "*"],
-        [Integer "2"; Integer "3"; Integer "4"; Operator "*"; Operator "*"],
         Product (Int 2, Product (Int 3,Int 4)),
         24
     );
@@ -134,7 +126,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         "(5-2)-1",
         ["("; "5"; "-"; "2"; ")"; "-"; "1"],
         [OpenParen; Integer "5"; Operator "-"; Integer "2"; CloseParen; Operator "-"; Integer "1"],
-        [Integer "5"; Integer "2"; Operator "-"; Integer "1"; Operator "-"],
         [Integer "5"; Integer "2"; Operator "-"; Integer "1"; Operator "-"],
         Difference (Difference (Int 5,Int 2),Int 1),
         2
@@ -147,7 +138,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["5"; "-"; "("; "2"; "-"; "1"; ")"],
         [Integer "5"; Operator "-"; OpenParen; Integer "2"; Operator "-"; Integer "1"; CloseParen],
         [Integer "5"; Integer "2"; Integer "1"; Operator "-"; Operator "-"],
-        [Integer "5"; Integer "2"; Integer "1"; Operator "-"; Operator "-"],
         Difference (Int 5, Difference (Int 2,Int 1)),
         4
     );
@@ -158,7 +148,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         "(24/4)/2",
         ["("; "2"; "4"; "/"; "4"; ")"; "/"; "2"],
         [OpenParen; Integer "24"; Operator "/"; Integer "4"; CloseParen; Operator "/"; Integer "2"],
-        [Integer "24"; Integer "4"; Operator "/"; Integer "2"; Operator "/"],
         [Integer "24"; Integer "4"; Operator "/"; Integer "2"; Operator "/"],
         Quotient (Quotient (Int 24,Int 4),Int 2),
         3
@@ -171,7 +160,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["2"; "4"; "/"; "("; "4"; "/"; "2"; ")"],
         [Integer "24"; Operator "/"; OpenParen; Integer "4"; Operator "/"; Integer "2"; CloseParen],
         [Integer "24"; Integer "4"; Integer "2"; Operator "/"; Operator "/"],
-        [Integer "24"; Integer "4"; Integer "2"; Operator "/"; Operator "/"],
         Quotient (Int 24, Quotient (Int 4,Int 2)),
         12
     );
@@ -183,7 +171,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         ["("; "2"; "*"; "3"; ")"; "+"; "4"],
         [OpenParen; Integer "2"; Operator "*"; Integer "3"; CloseParen; Operator "+"; Integer "4"],
         [Integer "2"; Integer "3"; Operator "*"; Integer "4"; Operator "+"],
-        [Integer "2"; Integer "3"; Operator "*"; Integer "4"; Operator "+"],
         Sum (Product (Int 2,Int 3),Int 4),
         10
     );
@@ -194,7 +181,6 @@ let private shuntingYardValues : (string * string list * token list * token list
         "2*(3+4)",
         ["2"; "*"; "("; "3"; "+"; "4"; ")"],
         [Integer "2"; Operator "*"; OpenParen; Integer "3"; Operator "+"; Integer "4"; CloseParen],
-        [Integer "2"; Integer "3"; Integer "4"; Operator "+"; Operator "*"],
         [Integer "2"; Integer "3"; Integer "4"; Operator "+"; Operator "*"],
         Product (Int 2, Sum (Int 3,Int 4)),
         14
@@ -209,9 +195,48 @@ let private shuntingYardValues : (string * string list * token list * token list
          Integer "3"; CloseParen; Operator "*"; OpenParen; Integer "4"; Operator "+";
          Integer "5"; CloseParen; CloseParen; Operator "/"; Integer "2"],
         [Integer "51"; Integer "2"; Integer "3"; Operator "+"; Integer "4"; Integer "5"; Operator "+"; Operator "*"; Operator "-"; Integer "2"; Operator "/"],
-        [Integer "51"; Integer "2"; Integer "3"; Operator "+"; Integer "4"; Integer "5"; Operator "+"; Operator "*"; Operator "-"; Integer "2"; Operator "/"],
         Quotient (Difference (Int 51,Product (Sum (Int 2,Int 3),Sum (Int 4,Int 5))),Int 2),
         3
+    );
+    (
+        // idx 15
+        // InfixFactoredGrammar.infixFactoredGrammar.16
+        "2^3",
+        ["2"; "^"; "3"],
+        [Integer "2"; Operator "^"; Integer "3"],
+        [Integer "2"; Integer "3"; Operator "^"],
+        Power (Int 2, Int 3),
+        8
+    );
+    (
+        // idx 16
+        // InfixFactoredGrammar.infixFactoredGrammar.17
+        "(4^3)^2",
+        ["("; "4"; "^"; "3"; ")"; "^"; "2"],
+        [OpenParen; Integer "4"; Operator "^"; Integer "3"; CloseParen; Operator "^"; Integer "2"],
+        [Integer "4"; Integer "3"; Operator "^"; Integer "2"; Operator "^"],
+        Power (Power (Int 4, Int 3), Int 2),
+        4096
+    );
+    (
+        // idx 17
+        // InfixFactoredGrammar.infixFactoredGrammar.18
+        "4^(3^2)",
+        ["4"; "^"; "("; "3"; "^"; "2"; ")";],
+        [Integer "4"; Operator "^"; OpenParen; Integer "3"; Operator "^"; Integer "2"; CloseParen],
+        [Integer "4"; Integer "3"; Integer "2"; Operator "^"; Operator "^"],
+        Power (Int 4, Power (Int 3, Int 2)),
+        262144
+    );
+    (
+        // idx 18
+        // InfixFactoredGrammar.infixFactoredGrammar.19
+        "4^3^2",
+        ["4"; "^"; "3"; "^"; "2"],
+        [Integer "4"; Operator "^"; Integer "3"; Operator "^"; Integer "2"],
+        [Integer "4"; Integer "3"; Integer "2"; Operator "^"; Operator "^"],
+        Power (Int 4, Power (Int 3, Int 2)),
+        262144
     );
     |]
 [<Test>]
@@ -230,15 +255,18 @@ let private shuntingYardValues : (string * string list * token list * token list
 [<TestCase(12, TestName = "ShuntingYard.shuntingyard.013")>]
 [<TestCase(13, TestName = "ShuntingYard.shuntingyard.014")>]
 [<TestCase(14, TestName = "ShuntingYard.shuntingyard.015")>]
+[<TestCase(15, TestName = "ShuntingYard.shuntingyard.016")>]
+[<TestCase(16, TestName = "ShuntingYard.shuntingyard.017")>]
+[<TestCase(17, TestName = "ShuntingYard.shuntingyard.018")>]
+[<TestCase(18, TestName = "ShuntingYard.shuntingyard.019")>]
 
 let ``function Infix.parser`` idx =
-    let (externalForm, _, _, _, _, _, _) = shuntingYardValues.[idx]
-    let (_, internalForm, _, _, _, _, _) = shuntingYardValues.[idx]
-    let (_, _, infixTokenList, _, _, _, _) = shuntingYardValues.[idx]
-    let (_, _, _, postfixTokenList, _, _, _) = shuntingYardValues.[idx]
-    let (_, _, _, _, prefixTokenList, _, _) = shuntingYardValues.[idx]
-    let (_, _, _, _, _, expr, _) = shuntingYardValues.[idx]
-    let (_, _, _, _, _, _, result) = shuntingYardValues.[idx]
+    let (externalForm, _, _, _, _, _) = shuntingYardValues.[idx]
+    let (_, internalForm, _, _, _, _) = shuntingYardValues.[idx]
+    let (_, _, infixTokenList, _, _, _) = shuntingYardValues.[idx]
+    let (_, _, _, postfixTokenList, _, _) = shuntingYardValues.[idx]
+    let (_, _, _, _, expr, _) = shuntingYardValues.[idx]
+    let (_, _, _, _, _, result) = shuntingYardValues.[idx]
 
     // Verify function input form and human form match.
     let convertedForm = ArithmeticExpressionEvaluator.Lib.explode externalForm
@@ -257,8 +285,8 @@ let ``function Infix.parser`` idx =
 
     // Verify result of Shunting Yard Alogrithm to expression
     let shuntingYardAstResult = ArithmeticExpressionEvaluator.ShuntingYard.ShuntingYardAst lexResult
-//    printfn "expr1: %A" expr1
-//    printfn "Shunting Yard result: %A" shuntingYardResult
+//    printfn "expr: %A" expr
+//    printfn "Shunting Yard result: %A" shuntingYardAstResult
     Assert.AreEqual (shuntingYardAstResult, expr)
 //    printfn "passed parser step"
 

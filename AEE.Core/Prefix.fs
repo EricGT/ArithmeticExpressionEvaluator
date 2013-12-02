@@ -26,7 +26,6 @@ open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
 open ArithmeticExpressionEvaluator.PrefixLexer
 
-
 //#region Prefix Parser
 
 // BNF - prefix
@@ -40,7 +39,7 @@ open ArithmeticExpressionEvaluator.PrefixLexer
 
 let rec int (l : token list) : (expr * token list) =
     match l with
-    | (Integer x)::tl -> 
+    | (Integer x)::tl ->
         let intValue = System.Int32.Parse(x)
         (Int intValue, tl)
     | _ -> raise Noparse
@@ -70,7 +69,7 @@ and expr =
     sum <|>
     prod <|>
     diff <|>
-    quot 
+    quot
 
 let prefixParser l =
     fst (expr l)

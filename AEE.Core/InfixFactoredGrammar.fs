@@ -25,81 +25,78 @@ open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
 open ArithmeticExpressionEvaluator.PrefixLexer
+//
+////#region Infix Parser
+//
+//let rec expr (l : token list) : expr * token list =
+//    let btyop n n' x y =
+//        match n' with
+//        | Operator "+" -> Sum(x,y)
+//        | Operator "-" -> Difference(x,y)
+//        | _ -> raise Noparse
+//    leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type" l
+//and term (l : token list) : expr * token list =
+//    let btyop n n' x y =
+//        match n' with
+//        | Operator "*" -> Product(x,y)
+//        | Operator "/" -> Quotient(x,y)
+//        | _ -> raise Noparse
+//    leftbin factor ((a (Operator "*")) <|> (a (Operator "/")))  (btyop "term") "type" l
+//and factor (l : token list) : expr * token list  =
+//    let int l =
+//        match l with
+//        | (Integer x)::tl ->
+//            let intValue = System.Int32.Parse(x)
+//            (Int intValue, tl)
+//        | _ -> raise Noparse
+//    let parenExpr =
+//        let parser = a OpenParen .>>. expr .>>. a CloseParen
+//        let mk = (fun ((_,e),_) -> e)
+//        parser |>> mk
+//    (int <|> parenExpr) l
+//let infixFactoredGrammar l =
+//    fst (expr l)
+//
+////#endregion
+
 
 //#region Infix Parser
 
-// BNF - infix
-//
-// expr =
-//   | term + expr
-//   | term - expr
-//   | term
-//   
-// term =
-//   | factor * term
-//   | factor / term
-//   | factor
-//
-// factor =
-//    | int
-//    | ( expr )
-
-let rec expr (l : token list) =
-
-    let sum =
-//        printfn "trying sum"
-        let parser = term .>>. a (Operator "+") .>>. expr 
-        let mk = (fun ((left,_),right) -> Sum(left,right))
-        parser |>> mk
-
-    let difference =
-//        printfn "trying difference"
-        let parser = term .>>. a (Operator "-") .>>. expr 
-        let mk = (fun ((left,_),right) -> Difference(left,right))
-        parser |>> mk
-
-    (sum <|>
-     difference <|>
-     term) l
-
-and term (l : token list) =
-
-    let product =
-//        printfn "trying product"
-        let parser = factor .>>. a (Operator "*") .>>. term 
-        let mk = (fun ((left,_),right) -> Product(left,right))
-        parser |>> mk
-
-    let quotient =
-//        printfn "trying quotient"
-        let parser = factor .>>. a (Operator "/") .>>. term 
-        let mk = (fun ((left,_),right) -> Quotient(left,right))
-        parser |>> mk
-
-    (product <|>
-     quotient <|>
-     factor) l
-
-and factor (l : token list) =
-
+let rec expr (l : token list) : expr * token list =
+    let btyop n n' x y =
+        match n' with
+        | Operator "+" -> Sum(x,y)
+        | Operator "-" -> Difference(x,y)
+        | _ -> raise Noparse
+//    leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type" l
+    let prs = leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type"
+    prs l
+and term (l : token list) : expr * token list =
+    let btyop n n' x y =
+        match n' with
+        | Operator "*" -> Product(x,y)
+        | Operator "/" -> Quotient(x,y)
+        | _ -> raise Noparse
+    leftbin factor ((a (Operator "*")) <|> (a (Operator "/")))  (btyop "term") "type" l
+and factor (l : token list) : expr * token list =
+    let btyop n n' x y =
+        match n' with
+        | Operator "^" -> Power(x,y)
+        | _ -> raise Noparse
+    rightbin ``base`` (a (Operator "^")) (btyop "factor") "type" l
+and ``base`` (l : token list) : expr * token list  =
     let int l =
-//        printfn "trying int"
         match l with
-        | (Integer x)::tl -> 
+        | (Integer x)::tl ->
             let intValue = System.Int32.Parse(x)
             (Int intValue, tl)
         | _ -> raise Noparse
-
     let parenExpr =
-//        printfn "trying paren"
-        let parser = a OpenParen .>>. expr .>>. a CloseParen 
+        let parser = a OpenParen .>>. expr .>>. a CloseParen
         let mk = (fun ((_,e),_) -> e)
         parser |>> mk
-
-    (int <|>
-     parenExpr) l
-
+    (int <|> parenExpr) l
 let infixFactoredGrammar l =
-    fst (expr l) 
-    
+    fst (expr l)
+
 //#endregion

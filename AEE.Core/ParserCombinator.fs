@@ -7,10 +7,10 @@
   Portions of the code from HOL Light licensed under:
 
        John Harrison, University of Cambridge Computer Laboratory
-                                                                          
+
             (c) Copyright, University of Cambridge 1998
               (c) Copyright, John Harrison 1998-2007
-                                                                           
+
     (See "HOL Light License.txt" for details.)
 
   Protions of the code:
@@ -53,9 +53,9 @@ exception Noparse
 let some p l =
     match l with
     | [] -> raise Noparse
-    | (h::t) -> 
-        if p h 
-        then (h,t) 
+    | (h::t) ->
+        if p h
+        then (h,t)
         else raise Noparse
 
 /// Parser that requires a specific item.
@@ -64,7 +64,7 @@ let some p l =
 // a (tok : string) : (string list -> string * string list)     // string
 // a (tok : token)  : (token list  -> token  * token list)      // token
 
-let a item = 
+let a item =
     some (fun x -> x = item)
 
 /// Produce alternative composition of two parsers.
@@ -73,11 +73,11 @@ let a item =
 // (<|>) (parser1 : 'a -> 'b) (parser2 : 'a -> 'b) (input : 'a) : 'b                                                                                   // generic
 // (<|>) (parser1 : string list -> string * string list) (parser2 : string list -> string * string list) (input : string list) : string * string list  // string
 // (<|>) (parser1 : token list  -> token  * token list)  (parser2 : token list  -> token  * token list)  (input : token list)  : token  * token list   // token
- 
+
 let (<|>) parser1 parser2 input =
-    try 
+    try
         parser1 input
-    with 
+    with
     | Noparse -> parser2 input
 
 /// Sequentially compose two parsers.
@@ -99,11 +99,11 @@ let (.>>.) parser1 parser2 input =
 // many (prs : token list  -> token  * token list)  (input : token list)  : token list  * token list    // token
 
 let rec many prs input =
-    try 
+    try
         let result,next = prs input
         let results,rest = many prs next
         (result::results),rest
-    with 
+    with
     | Noparse -> [],input
 
 /// Apply function to parser result.
@@ -121,7 +121,7 @@ let rec many prs input =
 // So one creates a function to transform the output to the type desired, e.g. treatment.
 // Then to get the correct output type of a parser one would use the parser as
 // parser |>> treatment
-// so that the parser pulls out the accepted values 
+// so that the parser pulls out the accepted values
 // and treatment converts it to the proper type.
 
 let (|>>) prs treatment input =
@@ -135,7 +135,7 @@ let (|>>) prs treatment input =
 // atleast (n : int) (prs : token list  -> token  * token list)  (i : int) : token list  * token list   // token
 
 let rec atleast n prs i =
-    (if n <= 0 
+    (if n <= 0
      then many prs
      else prs .>>. atleast (n - 1) prs |>> (fun (h,t) -> h::t)) i
 
@@ -146,38 +146,42 @@ let rec atleast n prs i =
 // finished (input : token list)  : int * token list   // token
 
 let finished input =
-    if input = [] 
-    then 0,input 
+    if input = []
+    then 0,input
     else failwith "Unparsed input"
+
+/// Applies parser and fails if it raises Noparse.
 
 // fix (err : string) (prs : 'a -> 'b) (input : 'a) : 'b                                      // generic
 // fix (err : string) (prs : string list -> string list) (input : string list) : string list  // string
 // fix (err : string) (prs : token list  -> token list)  (input : token list)  : token list   // token
 let fix err prs input =
-    try 
+    try
         prs input
-    with 
+    with
     | Noparse -> failwith (err + " expected")
+
+/// Parses iterated left-associated binary operator.
 
 // leftbin (prs : 'a -> 'b * 'c) (sep : 'c -> 'd * 'a) (cons : 'd -> 'b -> 'b -> 'b) (err : string) : ('a -> 'b * 'c)                                                                                    // generic
 // leftbin (prs : string list -> string * string list) (sep : string list -> string * string list) (cons : string -> string -> string -> string) (err : string) : (string list -> string * string list)  // string
 // leftbin (prs : token list  -> token  * token list)  (sep : token list  -> token  * token list)  (cons : token  -> token  -> token  -> token)  (err : string) : (token list  -> token  * token list)   // token
 let leftbin prs sep cons err =
     prs .>>. many (sep .>>. fix err prs) |>>
-    fun (x,opxs) -> 
+    fun (x,opxs) ->
         let ops,xs = unzip opxs
         List.foldBack2 (fun op y x -> cons op x y) (rev ops) (rev xs) x
+
+/// Parses iterated right-associated binary operator.
 
 // rightbin (prs : 'a -> 'b * 'c) (sep : 'c -> 'd * 'a) (cons : 'd -> 'b -> 'b -> 'b) (err : string) : ('a -> 'b * 'c)                                                                                    // generic
 // rightbin (prs : string list -> string * string list) (sep : string list -> string * string list) (cons : string -> string -> string -> string) (err : string) : (string list -> string * string list)  // string
 // rightbin (prs : token list  -> token  * token list)  (sep : token list  -> token  * token list)  (cons : token  -> token  -> token  -> token)  (err : string) : (token list  -> token  * token list)   // token
 let rightbin prs sep cons err =
     prs .>>. many (sep .>>. fix err prs) |>>
-    fun (x,opxs) -> 
-        if opxs = [] 
-        then x 
+    fun (x,opxs) ->
+        if opxs = []
+        then x
         else
             let ops,xs = unzip opxs
             List.foldBack2 cons ops (x::butlast xs) (last xs)
-
-//#endregion

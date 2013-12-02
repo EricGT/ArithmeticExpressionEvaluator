@@ -25,6 +25,7 @@ module ArithmeticExpressionEvaluator.ParserCombinator.Tests
 
 open ArithmeticExpressionEvaluator.ParserCombinator
 open ArithmeticExpressionEvaluator.PrefixLexer              // Needed for type token
+open ArithmeticExpressionEvaluator.Semantic
 
 open NUnit.Framework
 
@@ -32,7 +33,12 @@ open NUnit.Framework
 
 //#region "helper functions"
 
-// functions to help with test cases.
+// types and functions to help with test cases.
+
+type rightExpr =
+    | RightInt of int
+    | Power of rightExpr * rightExpr
+    | Dot of rightExpr * rightExpr
 
 // Note: HOL Light parsers that work with parsing exceptions expect noparse exception
 // and not a user defined exception.
@@ -69,6 +75,26 @@ let operatorTokenParser (l : token list) : token * token list =
     match l with
     | Operator h::t when ArithmeticExpressionEvaluator.PrefixLexer.isoperator h -> (Operator h,t)
     | _ -> raise Noparse
+
+// Create a parser that accepts a token list starting with only Integer token values and returns an expression.
+let intExprParser (l : token list) : expr * token list  =
+    let int l =
+        match l with
+        | (Integer x)::tl ->
+            let intValue = System.Int32.Parse(x)
+            (Int intValue, tl)
+        | _ -> raise Noparse
+    int l
+
+// Create a parser that accepts a token list starting with only Integer token values and returns an OtherExpr.
+let intRightExprParser (l : token list) : rightExpr * token list  =
+    let int l =
+        match l with
+        | (Integer x)::tl ->
+            let intValue = System.Int32.Parse(x)
+            (RightInt intValue, tl)
+        | _ -> raise Noparse
+    int  l
 
 //#endregion
 
@@ -1688,6 +1714,549 @@ let ``function finished - type token`` idx =
 
 //#endregion
 
+//#region "fix tests"
+
+// The first string is what humans expect to read
+// and the second string list is what the function reads.
+// Both are shown to make the test easier to comprehend.
+let private fixValues : (string * string list * (string * string list))[] = [|
+    (
+        // idx 0
+        // ParserCombinator.fix.01
+        // No input
+        // throws System.Exception "digit expected"
+        "",    // humans read this
+        [],    // the ArithmeticExpressionEvaluator.ParserCombinator.fix function reads this
+        ("",[])  // dummy value
+    );
+    (
+        // idx 1
+        // ParserCombinator.fix.02
+        // one char input, one value that matches
+        "1",
+        ["1"],
+        ("1",[])
+    );
+    (
+        // idx 2
+        // ParserCombinator.fix.03
+        // one char input, one value that doesn't match
+        // throws System.Exception "digit expected"
+        "a",
+        ["a"],
+        ("",[])  // dummy value
+    );
+    (
+        // idx 3
+        // ParserCombinator.fix.04
+        // two char input, two values that matches
+        "12",
+        ["1";"2"],
+        ("1",["2"])
+    );
+    (
+        // idx 4
+        // ParserCombinator.fix.05
+        // two char input, first value doesn't match, second value matches
+        // throws System.Exception "digit expected"
+        "a1",
+        ["a";"1"],
+        ("",[])  // dummy value
+    );
+    (
+        // idx 5
+        // ParserCombinator.fix.06
+        // two char input, no values match
+        // throws System.Exception "digit expected"
+        "ab",
+        ["a";"b"],
+        ("",[])  // dummy value
+    );
+    (
+        // idx 6
+        // ParserCombinator.fix.07
+        // three char input, no values match
+        // throws System.Exception "digit expected"
+        "abc",
+        ["a";"b";"c"],
+        ("",[])  // dummy value
+    );
+    (
+        // idx 7
+        // ParserCombinator.fix.08
+        // three char input, first values matches
+        "1bc",
+        ["1";"b";"c"],
+        ("1",["b";"c"])
+    );
+    (
+        // idx 8
+        // ParserCombinator.fix.09
+        // three char input, first two values match
+        "12c",
+        ["1";"2";"c"],
+        ("1",["2";"c"])
+    );
+    (
+        // idx 9
+        // ParserCombinator.fix.10
+        // three char input, all values match
+        "123",
+        ["1";"2";"3"],
+        ("1",["2";"3"])
+    );
+    |]
+
+[<Test>]
+[<TestCase(0, TestName = "ParserCombinator.fix.01", ExpectedException=typeof<System.Exception>, ExpectedMessage = "digit expected")>]
+[<TestCase(1, TestName = "ParserCombinator.fix.02")>]
+[<TestCase(2, TestName = "ParserCombinator.fix.03", ExpectedException=typeof<System.Exception>, ExpectedMessage = "digit expected")>]
+[<TestCase(3, TestName = "ParserCombinator.fix.04")>]
+[<TestCase(4, TestName = "ParserCombinator.fix.05", ExpectedException=typeof<System.Exception>, ExpectedMessage = "digit expected")>]
+[<TestCase(5, TestName = "ParserCombinator.fix.06", ExpectedException=typeof<System.Exception>, ExpectedMessage = "digit expected")>]
+[<TestCase(6, TestName = "ParserCombinator.fix.07", ExpectedException=typeof<System.Exception>, ExpectedMessage = "digit expected")>]
+[<TestCase(7, TestName = "ParserCombinator.fix.08")>]
+[<TestCase(8, TestName = "ParserCombinator.fix.09")>]
+[<TestCase(9, TestName = "ParserCombinator.fix.010")>]
+let ``function fix`` idx =
+    let (externalForm, _, _) = fixValues.[idx]
+    let (_, internalForm, _) = fixValues.[idx]
+    let (_, _, (currentResult , restResult)) = fixValues.[idx]
+
+    // Verify function input form and human form match.
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode externalForm
+//    printfn "external form: %A" externalForm
+//    printfn "internal form: %A" internalForm
+//    printfn "converted form: %A" convertedForm
+    Assert.AreEqual(convertedForm, internalForm)
+
+    // Verify result of function
+    let stringParser : string list -> (string * string list) = ArithmeticExpressionEvaluator.ParserCombinator.fix "digit" digitStringParser
+    let (current, rest) = stringParser internalForm
+//    printfn "expected result: %A %A" currentResult restResult
+//    printfn "function result: %A %A" current rest
+    Assert.AreEqual(current, currentResult)
+    Assert.AreEqual(rest, restResult)
+
+//#endregion
+
+//#region "leftbin tests"
+
+// The first string is what humans expect to read
+// and the second string list is what the function reads.
+// Both are shown to make the test easier to comprehend.
+let private leftbinStringTypeValues : (string * string list * (string * string list))[] = [|
+    (
+        // idx 0
+        // ParserCombinator.leftbin.01
+        // No input
+        // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
+        "",    // humans read this
+        [],    // the ArithmeticExpressionEvaluator.ParserCombinator.leftbin function reads this
+        ("",[])
+    );
+    (
+        // idx 1
+        // ParserCombinator.leftbin.02
+        // one sequence that matches
+        "1+2",
+        ["1"; "+"; "2"],
+        ("+(1,2)",[])
+    );
+    (
+        // idx 2
+        // ParserCombinator.leftbin.03
+        // two sequences that matches
+        "1+2+3",
+        ["1"; "+"; "2"; "+"; "3"],
+        ("+(+(1,2),3)",[])
+    );
+    (
+        // idx 3
+        // ParserCombinator.leftbin.04
+        // three sequences that matches
+        "1+2+3+4",
+        ["1"; "+"; "2"; "+"; "3"; "+"; "4"],
+        ("+(+(+(1,2),3),4)",[])
+    );
+    (
+        // idx 4
+        // ParserCombinator.leftbin.05
+        // one sequence that matches
+        "9-7",
+        ["9"; "-"; "7"],
+        ("-(9,7)",[])
+    );
+    (
+        // idx 5
+        // ParserCombinator.leftbin.06
+        // two sequences that matches
+        "9-7-5",
+        ["9"; "-"; "7"; "-"; "5"],
+        ("-(-(9,7),5)",[])
+    );
+    (
+        // idx 6
+        // ParserCombinator.leftbin.07
+        // three sequences that matches
+        "9-7-5-1",
+        ["9"; "-"; "7"; "-"; "5"; "-"; "1"],
+        ("-(-(-(9,7),5),1)",[])
+    );
+    (
+        // idx 7
+        // ParserCombinator.leftbin.08
+        // three sequences with mixed operators
+        "9-7+5-1",
+        ["9"; "-"; "7"; "+"; "5"; "-"; "1"],
+        ("-(+(-(9,7),5),1)",[])
+    );
+    (
+        // idx 8
+        // ParserCombinator.leftbin.09
+        // three sequences with mixed operators
+        "9+7-5+1",
+        ["9"; "+"; "7"; "-"; "5"; "+"; "1"],
+        ("+(-(+(9,7),5),1)",[])
+    );
+    |]
+
+[<Test>]
+[<TestCase(0, TestName = "ParserCombinator.leftbin.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "ParserCombinator.leftbin.02")>]
+[<TestCase(2, TestName = "ParserCombinator.leftbin.03")>]
+[<TestCase(3, TestName = "ParserCombinator.leftbin.04")>]
+[<TestCase(4, TestName = "ParserCombinator.leftbin.05")>]
+[<TestCase(5, TestName = "ParserCombinator.leftbin.06")>]
+[<TestCase(6, TestName = "ParserCombinator.leftbin.07")>]
+[<TestCase(7, TestName = "ParserCombinator.leftbin.08")>]
+[<TestCase(8, TestName = "ParserCombinator.leftbin.09")>]
+let ``function leftbin - type string`` idx =
+    let (externalForm, _, _) = leftbinStringTypeValues.[idx]
+    let (_, internalForm, _) = leftbinStringTypeValues.[idx]
+    let (_, _, (currentResult , restResult)) = leftbinStringTypeValues.[idx]
+
+    // Verify function input form and human form match.
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode externalForm
+//    printfn "external form: %A" externalForm
+//    printfn "internal form: %A" internalForm
+//    printfn "converted form: %A" convertedForm
+    Assert.AreEqual(convertedForm, internalForm)
+
+    // Verify result of function
+    let btyop n n' x y =
+        match n' with
+        | "+" -> "+(" + x + "," + y + ")"
+        | "-" -> "-(" + x + "," + y + ")"
+        | _ -> raise Noparse
+    let stringParser : string list -> string * string list = ArithmeticExpressionEvaluator.ParserCombinator.leftbin digitStringParser ((a "+") <|> (a "-")) (btyop "add/sub") "type"
+    let (current, rest) = stringParser internalForm
+//    printfn "expected result: %A %A" currentResult restResult
+//    printfn "function result: %A %A" current rest
+    Assert.AreEqual(current, currentResult)
+    Assert.AreEqual(rest, restResult)
+
+// The first string is what humans expect to read
+// and the second token list is what the function reads.
+// Both are shown to make the test easier to comprehend.
+let private leftbinTokenTypeValues : (string * token list * (expr * token list))[] = [|
+    (
+        // idx 0
+        // ParserCombinator.leftbin.101
+        // No input
+        "",    // humans read this
+        [],    // the ArithmeticExpressionEvaluator.ParserCombinator.leftbin function reads this
+        (Int 0,[]) // dummy value
+    );
+    (
+        // idx 1
+        // ParserCombinator.leftbin.102
+        // one sequence that matches
+        "1+2",
+        [Integer "1"; Operator "+"; Integer "2"],
+        (Sum (Int 1,Int 2),[])
+    );
+    (
+        // idx 2
+        // ParserCombinator.leftbin.103
+        // two sequences that matches
+        "1+2+3",
+        [Integer "1"; Operator "+"; Integer "2"; Operator "+"; Integer "3"],
+        (Sum (Sum (Int 1,Int 2),Int 3),[])
+    );
+    (
+        // idx 3
+        // ParserCombinator.leftbin.104
+        // three sequences that matches
+        "1+2+3+4",
+        [Integer "1"; Operator "+"; Integer "2"; Operator "+"; Integer "3"; Operator "+"; Integer "4"],
+        (Sum (Sum (Sum (Int 1,Int 2),Int 3),Int 4),[])
+    );
+    (
+        // idx 4
+        // ParserCombinator.leftbin.105
+        // one sequence that matches
+        "9-7",
+        [Integer "9"; Operator "-"; Integer "7"],
+        (Difference (Int 9,Int 7),[])
+    );
+    (
+        // idx 5
+        // ParserCombinator.leftbin.106
+        // two sequences that matches
+        "9-7-5",
+        [Integer "9"; Operator "-"; Integer "7"; Operator "-"; Integer "5"],
+        (Difference (Difference (Int 9,Int 7),Int 5),[])
+    );
+    (
+        // idx 6
+        // ParserCombinator.leftbin.107
+        // three sequences that matches
+        "9-7-5-1",
+        [Integer "9"; Operator "-"; Integer "7"; Operator "-"; Integer "5"; Operator "-"; Integer "1"],
+        (Difference (Difference (Difference (Int 9,Int 7),Int 5),Int 1),[])
+    );
+    (
+        // idx 7
+        // ParserCombinator.leftbin.108
+        // three sequences with mixed operators
+        "9-7+5-1",
+        [Integer "9"; Operator "-"; Integer "7"; Operator "+"; Integer "5"; Operator "-"; Integer "1"],
+        (Difference (Sum (Difference (Int 9,Int 7),Int 5),Int 1),[])
+    );
+    (
+        // idx 8
+        // ParserCombinator.leftbin.109
+        // three sequences with mixed operators
+        "9+7-5+1",
+        [Integer "9"; Operator "+"; Integer "7"; Operator "-"; Integer "5"; Operator "+"; Integer "1"],
+        (Sum (Difference (Sum (Int 9,Int 7),Int 5),Int 1),[])
+    );
+    |]
+
+[<Test>]
+[<TestCase(0, TestName = "ParserCombinator.leftbin.101", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "ParserCombinator.leftbin.102")>]
+[<TestCase(2, TestName = "ParserCombinator.leftbin.103")>]
+[<TestCase(3, TestName = "ParserCombinator.leftbin.104")>]
+[<TestCase(4, TestName = "ParserCombinator.leftbin.105")>]
+[<TestCase(5, TestName = "ParserCombinator.leftbin.106")>]
+[<TestCase(6, TestName = "ParserCombinator.leftbin.107")>]
+[<TestCase(7, TestName = "ParserCombinator.leftbin.108")>]
+[<TestCase(8, TestName = "ParserCombinator.leftbin.109")>]
+let ``function leftbin - type token`` idx =
+    let (externalForm, _, _) = leftbinTokenTypeValues.[idx]
+    let (_, internalForm, _) = leftbinTokenTypeValues.[idx]
+    let (_, _, (currentResult , restResult)) = leftbinTokenTypeValues.[idx]
+
+    // Verify function input form and human form match.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+//    printfn "external form: %A" externalForm
+//    printfn "internal form: %A" internalForm
+//    printfn "converted form: %A" convertedForm
+    Assert.AreEqual(convertedForm, internalForm)
+
+    // Verify result of function
+    let btyop n n' x y =
+        match n' with
+        | Operator "+" -> ArithmeticExpressionEvaluator.Semantic.Sum(x,y)
+        | Operator "-" -> ArithmeticExpressionEvaluator.Semantic.Difference(x,y)
+        | _ -> raise Noparse
+    let tokenParser = ArithmeticExpressionEvaluator.ParserCombinator.leftbin intExprParser ((a (Operator "+")) <|> (a (Operator "-"))) (btyop "add/sub") "type"
+    let (current, rest) = tokenParser internalForm
+//    printfn "expected result: %A %A" currentResult restResult
+//    printfn "function result: %A %A" current rest
+    Assert.AreEqual(current, currentResult)
+    Assert.AreEqual(rest, restResult)
+
+//#endregion
+
+//#region "rightbin tests"
+
+// The first string is what humans expect to read
+// and the second string list is what the function reads.
+// Both are shown to make the test easier to comprehend.
+let private rightbinStringTypeValues : (string * string list * (string * string list))[] = [|
+    (
+        // idx 0
+        // ParserCombinator.rightbin.01
+        // No input
+        // throws ArithmeticExpressionEvaluator.ParserCombinator.Noparse
+        "",    // humans read this
+        [],    // the ArithmeticExpressionEvaluator.ParserCombinator.rightbin function reads this
+        ("",[])
+    );
+    (
+        // idx 1
+        // ParserCombinator.rightbin.02
+        // one sequence that matches
+        "1^2",
+        ["1"; "^"; "2"],
+        ("^(1,2)",[])
+    );
+    (
+        // idx 2
+        // ParserCombinator.rightbin.03
+        // two sequences that matches
+        "1^2^3",
+        ["1"; "^"; "2"; "^"; "3"],
+        ("^(1,^(2,3))",[])
+    );
+    (
+        // idx 3
+        // ParserCombinator.rightbin.04
+        // three sequences that matches
+        "1^2^3^4",
+        ["1"; "^"; "2"; "^"; "3"; "^"; "4"],
+        ("^(1,^(2,^(3,4)))",[])
+    );
+    (
+        // idx 4
+        // ParserCombinator.rightbin.05
+        // one sequence that matches
+        "9.7",
+        ["9"; "."; "7"],
+        (".(9,7)",[])
+    );
+    (
+        // idx 5
+        // ParserCombinator.rightbin.06
+        // two sequences that matches
+        "9.7.5",
+        ["9"; "."; "7"; "."; "5"],
+        (".(9,.(7,5))",[])
+    );
+    (
+        // idx 6
+        // ParserCombinator.rightbin.07
+        // three sequences that matches
+        "9.7.5.1",
+        ["9"; "."; "7"; "."; "5"; "."; "1"],
+        (".(9,.(7,.(5,1)))",[])
+    );
+    (
+        // idx 7
+        // ParserCombinator.rightbin.08
+        // three sequences with mixed operators
+        "9.7^5.1",
+        ["9"; "."; "7"; "^"; "5"; "."; "1"],
+        (".(9,^(7,.(5,1)))",[])
+    );
+    (
+        // idx 8
+        // ParserCombinator.rightbin.09
+        // three sequences with mixed operators
+        "9^7.5^1",
+        ["9"; "^"; "7"; "."; "5"; "^"; "1"],
+        ("^(9,.(7,^(5,1)))",[])
+    );
+    |]
+
+[<Test>]
+[<TestCase(0, TestName = "ParserCombinator.rightbin.01", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "ParserCombinator.rightbin.02")>]
+[<TestCase(2, TestName = "ParserCombinator.rightbin.03")>]
+[<TestCase(3, TestName = "ParserCombinator.rightbin.04")>]
+[<TestCase(4, TestName = "ParserCombinator.rightbin.05")>]
+[<TestCase(5, TestName = "ParserCombinator.rightbin.06")>]
+[<TestCase(6, TestName = "ParserCombinator.rightbin.07")>]
+[<TestCase(7, TestName = "ParserCombinator.rightbin.08")>]
+[<TestCase(8, TestName = "ParserCombinator.rightbin.09")>]
+let ``function rightbin - type string`` idx =
+    let (externalForm, _, _) = rightbinStringTypeValues.[idx]
+    let (_, internalForm, _) = rightbinStringTypeValues.[idx]
+    let (_, _, (currentResult , restResult)) = rightbinStringTypeValues.[idx]
+
+    // Verify function input form and human form match.
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode externalForm
+//    printfn "external form: %A" externalForm
+//    printfn "internal form: %A" internalForm
+//    printfn "converted form: %A" convertedForm
+    Assert.AreEqual(convertedForm, internalForm)
+
+    // Verify result of function
+    let btyop n n' x y =
+        match n' with
+        | "^" -> "^(" + x + "," + y + ")"
+        | "." -> ".(" + x + "," + y + ")"
+        | _ -> raise Noparse
+    let stringParser : string list -> string * string list = ArithmeticExpressionEvaluator.ParserCombinator.rightbin digitStringParser ((a "^") <|> (a ".")) (btyop "power/dot") "type"
+    let (current, rest) = stringParser internalForm
+//    printfn "expected result: %A %A" currentResult restResult
+//    printfn "function result: %A %A" current rest
+    Assert.AreEqual(current, currentResult)
+    Assert.AreEqual(rest, restResult)
+
+// The first string is what humans expect to read
+// and the second token list is what the function reads.
+// Both are shown to make the test easier to comprehend.
+let private rightbinTokenTypeValues : (string * token list * (rightExpr * token list))[] = [|
+    (
+        // idx 0
+        // ParserCombinator.rightbin.101
+        // No input
+        "",    // humans read this
+        [],    // the ArithmeticExpressionEvaluator.ParserCombinator.rightbin function reads this
+        (RightInt 0,[]) // dummy value
+    );
+    (
+        // idx 1
+        // ParserCombinator.rightbin.102
+        // one sequence that matches
+        "1^2",
+        [Integer "1"; Operator "^"; Integer "2"],
+        (Power (RightInt 1,RightInt 2),[])
+    );
+    (
+        // idx 2
+        // ParserCombinator.rightbin.103
+        // two sequences that matches
+        "1^2^3",
+        [Integer "1"; Operator "^"; Integer "2"; Operator "^"; Integer "3"],
+        (Power (RightInt 1,Power (RightInt 2,RightInt 3)) ,[])
+    );
+    (
+        // idx 3
+        // ParserCombinator.rightbin.104
+        // three sequences that matches
+        "1^2^3^4",
+        [Integer "1"; Operator "^"; Integer "2"; Operator "^"; Integer "3"; Operator "^"; Integer "4"],
+        (Power (RightInt 1,Power (RightInt 2,Power (RightInt 3,RightInt 4))),[])
+    );
+    |]
+
+[<Test>]
+[<TestCase(0, TestName = "ParserCombinator.rightbin.101", ExpectedException=typeof<ArithmeticExpressionEvaluator.ParserCombinator.Noparse>, ExpectedMessage = "Exception of type 'ArithmeticExpressionEvaluator.ParserCombinator+Noparse' was thrown.")>]
+[<TestCase(1, TestName = "ParserCombinator.rightbin.102")>]
+[<TestCase(2, TestName = "ParserCombinator.rightbin.103")>]
+[<TestCase(3, TestName = "ParserCombinator.rightbin.104")>]
+let ``function rightbin - type token`` idx =
+    let (externalForm, _, _) = rightbinTokenTypeValues.[idx]
+    let (_, internalForm, _) = rightbinTokenTypeValues.[idx]
+    let (_, _, (currentResult , restResult)) = rightbinTokenTypeValues.[idx]
+
+    // Verify function input form and human form match.
+    let convertedForm = (ArithmeticExpressionEvaluator.PrefixLexer.prefixLex << ArithmeticExpressionEvaluator.Lib.explode) externalForm  // Notice use of lex to convert string to token.
+//    printfn "external form: %A" externalForm
+//    printfn "internal form: %A" internalForm
+//    printfn "converted form: %A" convertedForm
+    Assert.AreEqual(convertedForm, internalForm)
+
+    // Verify result of function
+    let btyop n n' x y =
+        match n' with
+        | Operator "^" -> Power(x,y)
+        | _ -> raise Noparse
+    let tokenParser : token list -> rightExpr * token list = ArithmeticExpressionEvaluator.ParserCombinator.rightbin intRightExprParser ((a (Operator "^")) <|> (a (Operator "#"))) (btyop "add/sub") "type"
+//    let tokenParser = ArithmeticExpressionEvaluator.ParserCombinator.rightbin intExprParser ((a (Operator "^")) <|> (a (Operator "#"))) (btyop "add/sub") "type"
+    let (current, rest) = tokenParser internalForm
+//    printfn "expected result: %A %A" currentResult restResult
+//    printfn "function result: %A %A" current rest
+    Assert.AreEqual(current, currentResult)
+    Assert.AreEqual(rest, restResult)
+
+//#endregion
+
 //#region "apply function (|>>) tests"
 
 // Test using |>> List.reduceBack (+)
@@ -1695,7 +2264,7 @@ let ``function finished - type token`` idx =
 
 [<Test>]
 let ``ParserCombinator.applyfunction.01``() =
-    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "12345"  
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "12345"
 //    let parser (sl : string list) : string list * string list = atleast 1 (some isdecimaldigit) sl
 //    let treatment (inp : string list) : string = List.reduceBack (+) inp
 //    let parser' (sl : string list) : string * string list = (parser |>> treatment) sl
@@ -1705,17 +2274,17 @@ let ``ParserCombinator.applyfunction.01``() =
     let result = parser' convertedForm
 //    printfn "result: %A" result
     Assert.AreEqual(result, ("12345",([] : string list)))
-    
+
 // Test using |>> (fun x -> Integer x)
 // to convert string to token
 
 [<Test>]
 let ``ParserCombinator.applyfunction.02``() =
-    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "12345"  
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "12345"
 //    let parser (sl : string list) : string * string list = stringof (some isdecimaldigit) sl
 //    let treatment (inp : string) : token = (fun x -> Integer x) inp
 //    let parser' (s : string list) : token * string list = (parser |>> treatment) s
-    let parser  = stringof (some isdecimaldigit) 
+    let parser  = stringof (some isdecimaldigit)
     let treatment = (fun x -> Integer x)
     let parser' = ArithmeticExpressionEvaluator.ParserCombinator.op_BarGreaterGreater parser treatment
     let result = parser' convertedForm
@@ -1727,7 +2296,7 @@ let ``ParserCombinator.applyfunction.02``() =
 
 [<Test>]
 let ``ParserCombinator.applyfunction.03``() =
-    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "  12345"  
+    let convertedForm = ArithmeticExpressionEvaluator.Lib.explode "  12345"
 //    let parser (sl : string list) : (string list * token) * string list  = (many (some iswhitespace) .>>. rawtoken) sl
 //    let treatment (inp : string list * token) : token = snd inp
 //    let parser' (sl : string list) : token * string list = (parser |>> treatment) sl

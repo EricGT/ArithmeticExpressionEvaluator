@@ -64,7 +64,7 @@ let evalValues : (expr * int)[] = [|
         1
     );
     |]
-   
+
 [<Test>]
 [<TestCase(0, TestName = "Semantic.eval.01")>]
 [<TestCase(1, TestName = "Semantic.eval.02")>]
@@ -80,5 +80,5 @@ let ``function eval`` idx =
 //    printfn "expected result: %A" result
 //    printfn "function result: %A" functionResult
     Assert.AreEqual(result, functionResult)
-    
+
 //#endregion

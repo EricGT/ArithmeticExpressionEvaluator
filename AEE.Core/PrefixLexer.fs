@@ -7,10 +7,10 @@
   Portions of the code from HOL Light licensed under:
 
        John Harrison, University of Cambridge Computer Laboratory
-                                                                          
+
             (c) Copyright, University of Cambridge 1998
               (c) Copyright, John Harrison 1998-2007
-                                                                           
+
     (See "HOL Light License.txt" for details.)
 
   Protions of the code:
@@ -50,7 +50,7 @@ let iswhitespace,isparen,isoperator,isdecimaldigit =
     let charcode s = int ((s:string).Chars(0))
     let whitespace = " \t\n\r"
     let parens = "()"
-    let operators = "*+-/"
+    let operators = "*+-/^"
     let decimaldigits = "0123456789"
     let allchars = whitespace + parens + operators + decimaldigits
     let ctable = Array.create 256 0
@@ -72,7 +72,7 @@ let iswhitespace,isparen,isoperator,isdecimaldigit =
 (* Prefix Lexer.                                                              *)
 (* ------------------------------------------------------------------------- *)
 
-type token = 
+type token =
     | Integer of string
     | Operator of string
     | OpenParen
@@ -100,7 +100,7 @@ let comma = a "," |>> (fun x -> Comma)
 let operator = some isoperator |>> (fun x -> Operator x)
 
 // rawtoken : string list -> token * string list
-let rawtoken =  
+let rawtoken =
     integer <|>
     openParen <|>
     closeParen <|>
@@ -112,7 +112,7 @@ let spacedtoken = many (some iswhitespace) .>>. rawtoken |>> snd
 
 // tokens (sl : string list) : token list * string list
 let rec tokens sl =
-    try 
+    try
         // get token from head of list
         let (t,rst) = spacedtoken sl
         // get tokens from tail of list
@@ -121,7 +121,7 @@ let rec tokens sl =
         let (tokenlist,rest) = t::toks,rst1
         // return token list and remaining input characters as a tuple
         tokenlist,rest
-    with 
+    with
     | Noparse -> [],sl
 
 //lex (sl : string list) : token list
