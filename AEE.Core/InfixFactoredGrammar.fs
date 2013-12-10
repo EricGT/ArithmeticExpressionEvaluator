@@ -25,40 +25,6 @@ open ArithmeticExpressionEvaluator.Lib
 open ArithmeticExpressionEvaluator.Semantic
 open ArithmeticExpressionEvaluator.ParserCombinator
 open ArithmeticExpressionEvaluator.PrefixLexer
-//
-////#region Infix Parser
-//
-//let rec expr (l : token list) : expr * token list =
-//    let btyop n n' x y =
-//        match n' with
-//        | Operator "+" -> Sum(x,y)
-//        | Operator "-" -> Difference(x,y)
-//        | _ -> raise Noparse
-//    leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type" l
-//and term (l : token list) : expr * token list =
-//    let btyop n n' x y =
-//        match n' with
-//        | Operator "*" -> Product(x,y)
-//        | Operator "/" -> Quotient(x,y)
-//        | _ -> raise Noparse
-//    leftbin factor ((a (Operator "*")) <|> (a (Operator "/")))  (btyop "term") "type" l
-//and factor (l : token list) : expr * token list  =
-//    let int l =
-//        match l with
-//        | (Integer x)::tl ->
-//            let intValue = System.Int32.Parse(x)
-//            (Int intValue, tl)
-//        | _ -> raise Noparse
-//    let parenExpr =
-//        let parser = a OpenParen .>>. expr .>>. a CloseParen
-//        let mk = (fun ((_,e),_) -> e)
-//        parser |>> mk
-//    (int <|> parenExpr) l
-//let infixFactoredGrammar l =
-//    fst (expr l)
-//
-////#endregion
-
 
 //#region Infix Parser
 
@@ -68,9 +34,7 @@ let rec expr (l : token list) : expr * token list =
         | Operator "+" -> Sum(x,y)
         | Operator "-" -> Difference(x,y)
         | _ -> raise Noparse
-//    leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type" l
-    let prs = leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type"
-    prs l
+    leftbin term ((a (Operator "+")) <|> (a (Operator "-")))  (btyop "expr") "type" l
 and term (l : token list) : expr * token list =
     let btyop n n' x y =
         match n' with

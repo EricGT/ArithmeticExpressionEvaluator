@@ -31,26 +31,26 @@ open ArithmeticExpressionEvaluator.ShuntingYard
 // Coverts infix tokens to expr i.e. prefix AST
 
 let precedenceClimbing (tokens : token list) : expr =
-    let rec expression (tokens : token list) (minPrec : int) : (expr * token list) =
-        let (lhs,rest) = parser tokens
+    let rec expression (inputTokens : token list) (minPrec : int) : (expr * token list) =
+        let (lhs,rest) = parser inputTokens
         match rest with
         | [] -> (lhs, rest)
         | _ ->
-            let rec makeExpr tokens minPrec lhs : (expr * token list) =
-                match tokens with
-                | Operator Op::tokensTail ->
-                    let prec = precedence.Item(Op)
+            let rec makeExpr (inputTokens : token list) (minPrec : int) (lhs : expr) : (expr * token list) =
+                match inputTokens with
+                | Operator infixOp::tokensTail ->
+                    let (prec : int) = precedence infixOp Infix
                     match prec >= minPrec with
                     | true ->
                         let prec1 Op =
-                            let prec = precedence.Item(Op)
-                            let assoc = associtivity.Item(Op)
+                            let prec = precedence Op Infix
+                            let assoc = associtivity Op Infix
                             match assoc with
                             | Left -> prec + 1
                             | Right -> prec
-                        let (rhs, tokensTail) = expression tokensTail (prec1 Op)
+                        let (rhs, tokensTail) = expression tokensTail (prec1 infixOp)
                         let branch =
-                            match Op with
+                            match infixOp with
                             | "+" -> Sum(lhs, rhs)
                             | "-" -> Difference(lhs, rhs)
                             | "*" -> Product(lhs, rhs)
@@ -58,22 +58,43 @@ let precedenceClimbing (tokens : token list) : expr =
                             | "^" -> Power(lhs, rhs)
                             | _ -> raise Noparse
                         makeExpr tokensTail minPrec branch
-                    | false -> (lhs, tokens)
-                | CloseParen::tokensTail -> (lhs, tokens)
+                    | false -> (lhs, inputTokens)
+                | CloseParen::tokensTail -> (lhs, inputTokens)
                 | [] -> (lhs,[])
                 | _ -> raise Noparse
-            makeExpr rest minPrec lhs
-    and parser (tokens : token list) : (expr * token list) =
-        match tokens with
-        | OpenParen::tokensTail ->
-            let (expr,rest) = expression tokensTail 0
-            match rest with
-            | CloseParen::tokensTail -> (expr, tokensTail)
+            let (expr,tokens) = makeExpr rest minPrec lhs
+            (expr,tokens)
+    and parser (inputTokens : token list) : (expr * token list) =
+        let prs =
+            match inputTokens with
+            | Operator prefixOp::tokensTail when isPrefix prefixOp ->
+                let (expr,rest) = parser tokensTail
+                let expr = Neg(expr)
+                (expr,rest)
+            | OpenParen::tokensTail ->
+                let (expr,rest) = expression tokensTail 0
+                match rest with
+                | CloseParen::tokensTail -> (expr,tokensTail)
+                | _ -> raise Noparse
+            | Integer v::tokensTail ->
+                let branch = Int (System.Int32.Parse(v))
+                (branch,tokensTail)
             | _ -> raise Noparse
-        | Integer v::tokensTail ->
-            let branch = Int (System.Int32.Parse(v))
-            (branch, tokensTail)
-        | _ -> raise Noparse
+        let (expr,tokens) = prs
+        postfixParser expr tokens
+    and postfixParser (expr : expr) (inputTokens : token list) : (expr * token list) =
+        let pfp =
+            match inputTokens with
+            | Operator postfixOp::tokensTail when isPostfix postfixOp ->
+                match postfixOp with
+                | "!" ->
+                    let expr = Fact(expr)
+                    (expr, tokensTail)
+                | _ -> raise Noparse
+            | _ -> (expr, inputTokens)
+        let (expr,tokens) = pfp
+        (expr,tokens)
+
     let (expr, tokens) = expression tokens 0
     expr
 

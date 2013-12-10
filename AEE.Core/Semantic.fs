@@ -28,12 +28,26 @@ type expr =
     | Difference of expr * expr
     | Quotient of expr * expr
     | Power of expr * expr
+    | Neg of expr
+    | Fact of expr
 
 let rec eval (e : expr) =
     match e with
-    | Int a -> a
-    | Sum (a,b) -> (eval a) + (eval b)
-    | Product (a,b) -> (eval a) * (eval b)
-    | Difference (a,b) -> (eval a) - (eval b)
-    | Quotient (a,b) -> (eval a) / (eval b)
-    | Power (a,b) -> pown (eval a) (eval b)
+    | Int l -> l
+    | Sum (l,r) -> (eval l) + (eval r)
+    | Product (l,r) -> (eval l) * (eval r)
+    | Difference (l,r) -> (eval l) - (eval r)
+    | Quotient (l,r) -> (eval l) / (eval r)
+    | Power (l,r) -> pown (eval l) (eval r)
+    | Neg(l) ->
+        let v = (eval l)
+        if v > 0
+        then v * -1
+        else v
+    | Fact(l) ->
+        let rec fact n acc =
+            match n with
+            | 0 -> acc
+            | _ when n > 0 -> fact (n-1) (acc * n)
+            | _ -> 0
+        fact (eval l) 1

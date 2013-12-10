@@ -42,7 +42,6 @@
     <Compile Include="Prefix.fs" />
     <Compile Include="InfixFactoredGrammar.fs" />
     <Compile Include="ShuntingYard.fs" />
-    <Compile Include="PrecedenceClimbing.fs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />
